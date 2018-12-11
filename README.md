@@ -1,2 +1,2 @@
 # Rest.OP
-Manage restaurant seating orders with visual GUI, and real time status of the resteraunt's status
+Manage restaurant seating reservations through animation status of the real time resteraunt visuality. 
