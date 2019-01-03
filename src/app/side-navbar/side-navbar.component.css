@@ -1,0 +1,52 @@
+#side-bar {
+    margin-top: 10px
+}
+hr.style-seven {
+    overflow: visible; /* For IE */
+    height: 30px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px 0 0 0;
+    border-radius: 20px;
+}
+hr.style-seven:before { /* Not really supposed to work, but does */
+    display: block;
+    content: "";
+    height: 30px;
+    margin-top: -31px;
+    border-style: solid;
+    border-color: black;
+    border-width: 0 0 1px 0;
+    border-radius: 20px;
+}
+
+.btn {
+    color: white;
+    font-family: Helvetica, Arial, Sans-Serif;
+    font-size: 20px;
+    text-decoration: none;
+    text-shadow: -1px -1px 1px rgba(63,107,169, 0.5);
+    position: relative;
+    padding: 15px 30px;
+    -webkit-box-shadow: 5px 5px 0 rgba(63,107,169, 0.5);
+    -moz-box-shadow: 5px 5px 0 rgba(63,107,169, 0.5);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    margin: 20px 10px 0 0;
+
+}
+
+.btn:hover {
+    -webkit-box-shadow: 0px 0px 0 #666;
+     -moz-box-shadow: 0px 0px 0 #666;
+     top: 5px;
+    left: 5px;
+}
+
+.yellow {
+    background-color: #d2a33d;
+}
+
+.blue {
+    background-color: #215ead;
+}
