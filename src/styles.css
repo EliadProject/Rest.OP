@@ -3,10 +3,10 @@
 
 html, body { height: 100%; }
 body {
-     margin: 0; 
-     font-family: 'Happy Monkey', cursive;
-     background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9') no-repeat;
-     background-size:cover;
-     color: snow
+	margin: 0  !important;
+	font-family: 'Happy Monkey', cursive !important;
+	background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9') no-repeat !important;
+	background-size:cover !important;
+	color: snow !important;
 }
 
