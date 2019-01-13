@@ -9,4 +9,6 @@ body {
 	background-size:cover !important;
 	color: snow !important;
 }
-
+.clickedTable{
+	background-color: #66FF66;
+}

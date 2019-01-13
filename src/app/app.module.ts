@@ -9,13 +9,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { SideNavbarComponent } from './side-navbar/side-navbar.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { MainTablesComponent } from './main-tables/main-tables.component';
 
 @NgModule({
-  declarations: [
+  declarations: [   
     AppComponent,
     MyNavComponent,
     SideNavbarComponent,
-    NavbarComponent
+    NavbarComponent,
+    MainTablesComponent
   ],
   imports: [
     BrowserModule,
