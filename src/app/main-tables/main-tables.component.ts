@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ignoreElements } from 'rxjs/operators';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-main-tables',
   templateUrl: './main-tables.component.html',
-  styleUrls: ['./main-tables.component.css']
+  styleUrls: ['./main-tables.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MainTablesComponent implements OnInit {
 
@@ -13,17 +16,49 @@ export class MainTablesComponent implements OnInit {
 
   ngOnInit() {
      
+
     let tables_JSON = [
       {centerX: 50, centerY:100, radius:10, checked:true},
       {centerX:50, centerY:200,  radius:10, checked:false},
       {centerX:200, centerY:100, radius:10, checked:false},
       {centerX:200, centerY:100,  radius:10, checked:false}];
 
+      let container = document.getElementsByClassName("container-fluied");
+   
+    
+    //adding chairs to table
+    for(let  tables_index=1; tables_index<=2; tables_index++){
+      let table_template =   document.createElement("ul");
+      table_template.className = "circle-container";
+    
+    
+      for (let i=1; i<=8; i++){
+     
+        let li = document.createElement("li");
+     
+        let section =  document.createElement("section")
+        section.className = "event";
+     
+        let div = document.createElement("div");
+        div.className = "event-content";
+      
+        let img = document.createElement("img");
+        img.src="https://previews.123rf.com/images/asmati/asmati1702/asmati170212257/72968786-office-chair-sign-vector-white-icon-in-red-circle-on-white-background-isolated-.jpg";
+        img.width = 200;
+      
+        div.append(img);
+        section.appendChild(div);
+        li.appendChild(section);
+        table_template.appendChild(li);
+    }
+    container[0].appendChild(table_template);
+  }
+  
+
     let table1 =  document.createElement("div");
     table1.classList.add("circle-container");
-    let container = document.getElementsByClassName("container-fluied");
-    container[0].appendChild(table1);
     
+   
 
     
     var tables = document.getElementsByClassName("circle-container")
