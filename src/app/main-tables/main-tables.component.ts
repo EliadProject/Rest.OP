@@ -26,8 +26,8 @@ export class MainTablesComponent implements OnInit {
       let container = document.getElementsByClassName("container-fluied");
    
     
-    //adding chairs to table
-    for(let  tables_index=1; tables_index<=2; tables_index++){
+    // tables generating count
+    for(let  tables_index = 1; tables_index <= 6; tables_index++){
       let table_template =   document.createElement("ul");
       table_template.className = "circle-container";
     

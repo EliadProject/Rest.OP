@@ -10,6 +10,7 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
 import { SideNavbarComponent } from './side-navbar/side-navbar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MainTablesComponent } from './main-tables/main-tables.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [   
@@ -17,7 +18,8 @@ import { MainTablesComponent } from './main-tables/main-tables.component';
     MyNavComponent,
     SideNavbarComponent,
     NavbarComponent,
-    MainTablesComponent
+    MainTablesComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

@@ -11,6 +11,7 @@
     /* 3 */
     margin: 2em 5em ;
     border: solid 5px rgb(51, 0, 0);
+    float: left;
   }
   .circle-container > * {
     /* 4 */
