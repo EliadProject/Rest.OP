@@ -7,9 +7,9 @@ import * as $ from 'jquery';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  private COFFEE = require("./images/coffee.png");
-  private BURGER = require("./images/burger.png");
-  private BEER = require("./images/beer.png");
+  //private COFFEE = require("./images/coffee.png");
+  //private BURGER = require("./images/burger.png");
+  //private BEER = require("./images/beer.png");
   
   constructor() { }
 
