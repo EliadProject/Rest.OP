@@ -4,8 +4,15 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 
+
+
+
 // Get our API routes
 const api = require('./backend/routes/api');
+//const socket_tables = require('./backend/tables-socket');
+
+
+
 
 const app = express();
 
@@ -33,7 +40,29 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+
+
 const server = http.createServer(app);
+const io = require('socket.io').listen(server);
+
+	//initialize  8 namesspaces;
+	var nsp = io.of('/08');
+	nsp.on('connection', function(socket) {
+   
+		console.log('someone connected');
+});
+nsp.on("tabledChanged",function(tableIndex){
+  console.log("Table number: " + tableIndex+ " has changed");
+});
+
+io.on("tabledChanged",function(tableIndex){
+  console.log("Table number: " + tableIndex+ " has changed");
+});
+
+
+
+
+
 
 /**
  * Listen on provided port, on all network interfaces.

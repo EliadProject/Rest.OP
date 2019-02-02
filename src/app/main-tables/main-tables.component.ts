@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ignoreElements } from 'rxjs/operators';
 import { ViewEncapsulation } from '@angular/core';
 
+
+import * as io from "socket.io-client";
+
 @Component({
   selector: 'app-main-tables',
   templateUrl: './main-tables.component.html',
@@ -10,12 +13,16 @@ import { ViewEncapsulation } from '@angular/core';
 })
 export class MainTablesComponent implements OnInit {
 
-  constructor() { 
+  private url="http://localhost:3000";
+  private namespace="/08";
+  private socket: SocketIOClient.Socket;
 
+  constructor() {
+    this.socket = io(this.url+this.namespace); 
+    console.log(this.socket);
   }
 
-  ngOnInit() {
-     
+  ngOnInit() {  
 
     let tables_JSON = [
       {centerX: 50, centerY:100, radius:10, checked:true},
@@ -69,13 +76,22 @@ export class MainTablesComponent implements OnInit {
         last_clicked_table.classList.remove("clickedTable");
         //add new clicked table 
         this.classList.add("clickedTable");
+
+        this.socket.emit('tableChanged', 'sadsad');
+        
         //save last clicked for next time
         last_clicked_table=this;
         
       });
     
     }
-     
+    
+  // Connect to Namespace Socket.IO
+      
+  
+    
+    
+
   
 
   }
