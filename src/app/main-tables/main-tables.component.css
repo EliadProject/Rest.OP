@@ -58,4 +58,6 @@
     filter: grayscale(0);
   }
   
-  
+  .selected{
+    background-color: #66FF66 !important ;
+  }

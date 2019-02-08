@@ -11,6 +11,9 @@ import { SideNavbarComponent } from './side-navbar/side-navbar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MainTablesComponent } from './main-tables/main-tables.component';
 import { FooterComponent } from './footer/footer.component';
+import { SocketIoModule, SocketIoConfig } from 'ng6-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
 
 @NgModule({
   declarations: [   
@@ -19,7 +22,8 @@ import { FooterComponent } from './footer/footer.component';
     SideNavbarComponent,
     NavbarComponent,
     MainTablesComponent,
-    FooterComponent
+    FooterComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,8 @@ import { FooterComponent } from './footer/footer.component';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    SocketIoModule.forRoot(config) 
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -43,22 +43,25 @@ app.set('port', port);
 
 
 const server = http.createServer(app);
-const io = require('socket.io').listen(server);
+let io = require('socket.io')(http);
+io.on('connection', (socket) => {
 
-	//initialize  8 namesspaces;
-	var nsp = io.of('/08');
-	nsp.on('connection', function(socket) {
-   
-		console.log('someone connected new');
-});
-nsp.on("tabledChanged",function(tableIndex){
-  console.log("Table number: " + tableIndex+ " has changed");
-});
+    // Log whenever a user connects
+    console.log('user connected');
 
-io.on("tabledChanged",function(tableIndex){
-  console.log("Table number: " + tableIndex+ " has changed");
-});
+    // Log whenever a client disconnects from our websocket server
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    });
 
+    // When we receive a 'message' event from our client, print out
+    // the contents of that message and then echo it back to our client
+    // using `io.emit()`
+    socket.on('message', (message) => {
+        console.log("Message Received: " + message);
+        io.emit('message', {type:'new-message', text: message});    
+    });
+});
 
 
 

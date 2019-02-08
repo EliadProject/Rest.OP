@@ -1,2 +1,15 @@
   
-<section class="container-fluied"></section>
+<section class="container-fluied">
+   <div *ngFor="let tableIndex of tables" (click)="onSelect(tableIndex)" >
+        <ul class="circle-container" [class.selected]="tableIndex === selectedTable" >
+                <li *ngFor="let chair of [].constructor(chairsNum)">
+                  <section class="event">
+                    <div class="event-content">
+                      <img width="200" src="https://previews.123rf.com/images/asmati/asmati1702/asmati170212257/72968786-office-chair-sign-vector-white-icon-in-red-circle-on-white-background-isolated-.jpg"> 
+                    </div>
+                  </section>
+                </li>
+              </ul> 
+       
+    </div>
+</section>
