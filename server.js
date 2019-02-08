@@ -49,7 +49,7 @@ const io = require('socket.io').listen(server);
 	var nsp = io.of('/08');
 	nsp.on('connection', function(socket) {
    
-		console.log('someone connected');
+		console.log('someone connected new');
 });
 nsp.on("tabledChanged",function(tableIndex){
   console.log("Table number: " + tableIndex+ " has changed");

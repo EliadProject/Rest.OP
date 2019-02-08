@@ -77,7 +77,7 @@ export class MainTablesComponent implements OnInit {
         //add new clicked table 
         this.classList.add("clickedTable");
 
-        this.socket.emit('tableChanged', 'sadsad');
+        //this.socket.emit('tableChanged', 'sadsad');
         
         //save last clicked for next time
         last_clicked_table=this;
