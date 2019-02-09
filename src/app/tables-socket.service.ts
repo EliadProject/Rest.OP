@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ng6-socket-io';
+import { Socket } from 'ngx-socket-io';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TableSocket {
   
   constructor(private socket: Socket) { }
  
-  sendMessage(msg: string){
-      this.socket.emit("message", msg);
+  //user selected table
+  tableSelected(tableSelected: number){
+      this.socket.emit("table-select", tableSelected);
+     
   }
+  //user approved selection of table
+  tableApproved(tableApproved: number){
+    this.socket.emit("table-approve", tableApproved);
+   
+}
   
   /*
   getMessage() {
       return this.socket
-          .fromEvent("message")
+          .fromEvent("table-change")
           .map( data => data.msg );
   }
   */

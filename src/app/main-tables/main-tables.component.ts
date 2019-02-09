@@ -20,8 +20,7 @@ export class MainTablesComponent implements OnInit {
 
   onSelect(tableIndex: number) : void{
     this.selectedTable = tableIndex;
-    
-    //this.sockets.sendMessage("Hi, I'm connected");
+    this.sockets.tableSelected(this.selectedTable);
   }
 
  

@@ -1,7 +1,9 @@
 // Get dependencies
-const express = require('express');
+const express = require('express')
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const path = require('path');
-const http = require('http');
 const bodyParser = require('body-parser');
 
 
@@ -12,9 +14,6 @@ const api = require('./backend/routes/api');
 //const socket_tables = require('./backend/tables-socket');
 
 
-
-
-const app = express();
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -28,6 +27,7 @@ app.use('/api', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
+  //res.sendfile("client-test.html")
   res.sendFile(path.join(__dirname, 'dist/my-app/index.html'));
 });
 
@@ -42,26 +42,22 @@ app.set('port', port);
  */
 
 
-const server = http.createServer(app);
-let io = require('socket.io')(http);
-io.on('connection', (socket) => {
 
-    // Log whenever a user connects
-    console.log('user connected');
+io.set('origins', '*:*');
 
-    // Log whenever a client disconnects from our websocket server
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
-    });
-
-    // When we receive a 'message' event from our client, print out
-    // the contents of that message and then echo it back to our client
-    // using `io.emit()`
-    socket.on('message', (message) => {
-        console.log("Message Received: " + message);
-        io.emit('message', {type:'new-message', text: message});    
-    });
-});
+//Whenever someone connects this gets executed
+io.on('connection', function(socket) {
+	console.log('A user connected');
+	socket.on('table-select', function(data) {
+		console.log(data);
+		//broadcast the rest of the users
+	 });
+	//Whenever someone disconnects this piece of code executed
+	socket.on('disconnect', function () {
+	   console.log('A user disconnected');
+	});
+ });
+ 
 
 
 
@@ -70,4 +66,4 @@ io.on('connection', (socket) => {
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+http.listen(port, () => console.log(`API running on localhost:${port}`));
