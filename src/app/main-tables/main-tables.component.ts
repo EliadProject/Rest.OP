@@ -33,6 +33,13 @@ export class MainTablesComponent implements OnInit {
     this.tables = this.tablesLogic.getTables();
     
   }
+  isTaken(table : Table) : Boolean{
+    if(table.status === 2)
+      return true
+    else
+      return false
+    
+  }
 
   checkIfContains(tableId: number) : boolean {
     console.log(this.selectedByOther);
@@ -40,8 +47,9 @@ export class MainTablesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTables();
+  //  this.getTables();
     
+    //get changes from users trying to choose table
     this.sockets
     .tableChanged()
     .subscribe(msg => { 
@@ -53,15 +61,23 @@ export class MainTablesComponent implements OnInit {
       }
       this.selectedByOther.push(msg.newTable);
     })
-  }
-
-
-      
   
+  
+    //get all changes of tables within database  
+    this.sockets
+    .allTables()
+    .subscribe(msg => { 
+    //change table selected by other
+    console.log(msg)
     
- 
+    this.tables = msg
+    
+    
+      
+    });
 
-  
+    
+    }
 
   }
 

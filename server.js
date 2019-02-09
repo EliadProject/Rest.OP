@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const api = require('./backend/routes/api');
 //const socket_tables = require('./backend/tables-socket');
 
-
+var tables = require('./routes/tables');
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'dist/my-app')));
 
 // Set our api routes
-app.use('/api', api);
+app.use('/api', tables);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
@@ -45,10 +45,32 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
+//Dummy Tables
+tablesJSON = [{
+	"id":1,
+	"status":2
+	},{"id":2,
+	"status":1  },{"id":3,
+	"status":1  },{"id":4,
+	"status":1  },{"id":5,
+	"status":1  },{"id":6,
+	"status":1  }]
+
+//Generate Tables
+//let tables = JSON.parse(tablesJSON);
+
+
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
+<<<<<<< HEAD
 	console.log('A user connected');
 	socket.on('table-select', function(tableChange) {
+=======
+	console.log('A user connected')
+	socket.emit("all-tables",{ description: tablesJSON })
+	socket.on('table-select', function(tableIndex) {
+		console.log(tableIndex);
+>>>>>>> 16c93e9fdee52ca601e0b6eeb3d017e0dbe3a9d5
 		//broadcast the rest of the users
 		socket.broadcast.emit('table-changed',{ description: tableChange})
 	 });
