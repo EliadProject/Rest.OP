@@ -62,15 +62,9 @@ tablesJSON = [{
 
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
-<<<<<<< HEAD
-	console.log('A user connected');
-	socket.on('table-select', function(tableChange) {
-=======
 	console.log('A user connected')
 	socket.emit("all-tables",{ description: tablesJSON })
-	socket.on('table-select', function(tableIndex) {
-		console.log(tableIndex);
->>>>>>> 16c93e9fdee52ca601e0b6eeb3d017e0dbe3a9d5
+	socket.on('table-select', function(tableChange) {
 		//broadcast the rest of the users
 		socket.broadcast.emit('table-changed',{ description: tableChange})
 	 });
