@@ -26,6 +26,13 @@ export class TableSocket {
           .fromEvent<any>("table-changed")
           .pipe(map(data => data.description));
   }
+
+  //other user is try to finding a table
+  allTables() {
+    return this.socket
+        .fromEvent<any>("all-tables")
+        .pipe(map(data => data.description));
+}
   //
   allTablesChanged(){
 

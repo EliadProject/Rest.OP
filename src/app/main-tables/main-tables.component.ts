@@ -27,16 +27,39 @@ export class MainTablesComponent implements OnInit {
     this.tables = this.tablesLogic.getTables();
     
   }
+  isTaken(table : Table) : Boolean{
+    if(table.status === 2)
+      return true
+    else
+      return false
+    
+  }
 
   ngOnInit() {
-    this.getTables();
+  //  this.getTables();
     
+    //get changes from users trying to choose table
     this.sockets
     .tableChanged()
     .subscribe(msg => { 
     //change table selected by other
     console.log(msg)
     this.selectedByOther = msg
+    
+    
+      
+    });
+
+
+    //get all changes of tables within database  
+    this.sockets
+    .allTables()
+    .subscribe(msg => { 
+    //change table selected by other
+    console.log(msg)
+    
+    this.tables = msg
+    
     
       
     });

@@ -45,9 +45,25 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
+//Dummy Tables
+tablesJSON = [{
+	"id":1,
+	"status":2
+	},{"id":2,
+	"status":1  },{"id":3,
+	"status":1  },{"id":4,
+	"status":1  },{"id":5,
+	"status":1  },{"id":6,
+	"status":1  }]
+
+//Generate Tables
+//let tables = JSON.parse(tablesJSON);
+
+
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
-	console.log('A user connected');
+	console.log('A user connected')
+	socket.emit("all-tables",{ description: tablesJSON })
 	socket.on('table-select', function(tableIndex) {
 		console.log(tableIndex);
 		//broadcast the rest of the users
