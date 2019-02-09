@@ -51,6 +51,7 @@ io.on('connection', function(socket) {
 	socket.on('table-select', function(data) {
 		console.log(data);
 		//broadcast the rest of the users
+		socket.broadcast.emit('table-changed',{ description: ' Hello to everyone!'})
 	 });
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {

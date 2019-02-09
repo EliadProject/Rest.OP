@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,13 @@ export class TableSocket {
    
 }
   
-  /*
+  
   getMessage() {
+      console.log("someone broadcast")
       return this.socket
           .fromEvent("table-change")
-          .map( data => data.msg );
+          .pipe(map( data => data));
   }
-  */
+  
 
 }
