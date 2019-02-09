@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TableSocket } from '../tables-socket.service';
-
-
+import {Table} from '../table'
+import {TablesLogicService} from '../tables-logic.service'
 
 
 @Component({
@@ -12,28 +12,33 @@ import { TableSocket } from '../tables-socket.service';
 })
 export class MainTablesComponent implements OnInit {
 
-  constructor(private sockets : TableSocket) {
+  constructor(private sockets : TableSocket,private tablesLogic: TablesLogicService) {
   }
-  tables : number[] = [1,2,3,4,5,6];
+  tables : Table[];
   chairsNum: number = 8;
   selectedTable : number;
 
-  onSelect(tableIndex: number) : void{
-    this.selectedTable = tableIndex;
+  onSelect(table: Table) : void {
+    this.selectedTable = table.id;
     this.sockets.tableSelected(this.selectedTable);
   }
+  getTables() : void {
+    this.tables = this.tablesLogic.getTables();
+    
+  }
 
- 
-  
-
- 
-
-  ngOnInit() {  
+  ngOnInit() {
+    this.getTables();
+    
     this.sockets
     .tableChanged()
-    .subscribe(msg => {
-      console.log("got message");
-});
+    .subscribe(msg => { 
+    //mock - change table something to available and print all tables status
+    console.log(this.tables)
+      
+    });
+
+    
     }
 
 
