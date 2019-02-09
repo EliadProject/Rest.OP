@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
+import { TableChange } from './tableChange';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class TableSocket {
-  
+
   constructor(private socket: Socket) { }
  
   //user selected table
-  tableSelected(tableSelected: number){
-      this.socket.emit("table-select", tableSelected);
+  tableSelected(tableSelected: TableChange){
+    this.socket.emit("table-select", tableSelected);
      
   }
   //user approved selection of table
