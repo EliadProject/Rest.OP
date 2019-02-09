@@ -21,7 +21,7 @@ export class TableSocket {
 }
   
   
-  getMessage() {
+  tableChanged() {
       console.log("someone broadcast")
       return this.socket
           .fromEvent("table-change")

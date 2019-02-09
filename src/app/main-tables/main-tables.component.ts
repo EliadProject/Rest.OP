@@ -29,7 +29,11 @@ export class MainTablesComponent implements OnInit {
  
 
   ngOnInit() {  
-  
+    this.sockets
+    .tableChanged()
+    .subscribe(msg => {
+      console.log("got message");
+});
     }
 
 
