@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const api = require('./backend/routes/api');
 //const socket_tables = require('./backend/tables-socket');
 
-
+var tables = require('./routes/tables');
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'dist/my-app')));
 
 // Set our api routes
-app.use('/api', api);
+app.use('/api', tables);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
