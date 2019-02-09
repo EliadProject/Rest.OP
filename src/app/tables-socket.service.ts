@@ -20,13 +20,16 @@ export class TableSocket {
     this.socket.emit("table-approve", tableApproved);
    
 }
-  
+  //other user is try to finding a table
   tableChanged() {
       console.log("someone broadcast")
       return this.socket
           .fromEvent<any>("table-changed")
-          .pipe(map(data => data.msg));
+          .pipe(map(data => data.description));
   }
-  
+  //
+  allTablesChanged(){
+
+  }
 
 }

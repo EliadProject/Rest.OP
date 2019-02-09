@@ -17,6 +17,7 @@ export class MainTablesComponent implements OnInit {
   tables : Table[];
   chairsNum: number = 8;
   selectedTable : number;
+  selectedByOther : number;
 
   onSelect(table: Table) : void {
     this.selectedTable = table.id;
@@ -33,8 +34,10 @@ export class MainTablesComponent implements OnInit {
     this.sockets
     .tableChanged()
     .subscribe(msg => { 
-    //mock - change table something to available and print all tables status
-    console.log(this.tables)
+    //change table selected by other
+    console.log(msg)
+    this.selectedByOther = msg
+    
       
     });
 

@@ -61,3 +61,6 @@
   .selected{
     background-color: #66FF66 !important ;
   }
+  .selectedOther{
+    background-color: rgb(255, 184, 102) !important ;
+  }

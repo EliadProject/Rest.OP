@@ -48,10 +48,10 @@ io.set('origins', '*:*');
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
 	console.log('A user connected');
-	socket.on('table-select', function(data) {
-		console.log(data);
+	socket.on('table-select', function(tableIndex) {
+		console.log(tableIndex);
 		//broadcast the rest of the users
-		socket.broadcast.emit('table-changed',{ description: ' Hello to everyone!'})
+		socket.broadcast.emit('table-changed',{ description: tableIndex})
 	 });
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {
