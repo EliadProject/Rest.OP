@@ -15,22 +15,21 @@ export class MainTablesComponent implements OnInit {
 
   constructor(private sockets : TableSocket,private tablesLogic: TablesLogicService) {
   }
-  tables : Table[];
   chairsNum: number = 8;
-  selectedTable : number;
-  selectedByOther : number[] = [] ;
+  
+ 
   lastTable: number = 0 ;
   jsonTable: TableChange;
 
   onSelect(table: Table) : void {
-    this.selectedTable = table.id;
-    this.jsonTable = { lastTable: this.lastTable , newTable: this.selectedTable};
-    this.lastTable = this.selectedTable;
+    this.tablesLogic.selectedTable = table.id;
+    this.jsonTable = { lastTable: this.lastTable , newTable: table.id};
+    this.lastTable = table.id;
 
     this.sockets.tableSelected(this.jsonTable);
   }
-  getTables() : void {
-    this.tables = this.tablesLogic.getTables();
+  getMockTables() : void {
+    this.tablesLogic.tables = this.tablesLogic.getTables();
     
   }
   isTaken(table : Table) : Boolean{
@@ -42,8 +41,7 @@ export class MainTablesComponent implements OnInit {
   }
 
   checkIfContains(tableId: number) : boolean {
-    console.log(this.selectedByOther);
-    return (this.selectedByOther.indexOf(tableId) != -1);
+    return (this.tablesLogic.selectedByOther.indexOf(tableId) != -1);
   }
 
   ngOnInit() {
@@ -54,12 +52,11 @@ export class MainTablesComponent implements OnInit {
     .tableChanged()
     .subscribe(msg => { 
       //change table selected by other
-      console.log(msg);
-      let lastIndex = this.selectedByOther.indexOf(msg.lastTable) ;
+      let lastIndex = this.tablesLogic.selectedByOther.indexOf(msg.lastTable) ;
       if(lastIndex  !== -1){ // Not contains msg number
-        this.selectedByOther.splice(lastIndex,1);   
+        this.tablesLogic.selectedByOther.splice(lastIndex,1);   
       }
-      this.selectedByOther.push(msg.newTable);
+      this.tablesLogic.selectedByOther.push(msg.newTable);
     })
   
   
@@ -68,9 +65,8 @@ export class MainTablesComponent implements OnInit {
     .allTables()
     .subscribe(msg => { 
     //change table selected by other
-    console.log(msg)
     
-    this.tables = msg
+    this.tablesLogic.tables = msg
     
     
       

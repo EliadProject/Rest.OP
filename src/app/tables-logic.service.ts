@@ -6,6 +6,10 @@ import { TablesMock } from './tables-mock'
 })
 export class TablesLogicService {
   
+
+  tables: Table[]
+  selectedTable : number
+  selectedByOther : number[] = []
   //get tables from server 
   getTables(): Table[] {
     return TablesMock;

@@ -1,7 +1,7 @@
   
 <section class="container-fluied">
-   <div *ngFor="let table of tables" (click)="onSelect(table)" >
-        <ul class="circle-container" [class.selected]="table.id === selectedTable" [class.selectedOther]="checkIfContains(table.id)" [class.taken]="isTaken(table)" >
+   <div *ngFor="let table of tablesLogic.tables" (click)="onSelect(table)" >
+        <ul class="circle-container" [class.selected]="table.id === tablesLogic.selectedTable" [class.selectedOther]="checkIfContains(table.id)" [class.taken]="isTaken(table)" >
             <li *ngFor="let chair of [].constructor(chairsNum)">
                 <section class="event">
                   <div class="event-content">
