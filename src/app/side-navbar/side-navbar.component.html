@@ -5,12 +5,12 @@
           <form>
               <div class="form-group">
                   <label>What's your name?</label>
-                  <input id="name" type="text" class="form-control" />
+                  <input id="name" type="text" class="form-control"   />
                  
               </div>
               <div class="form-group">
                   <label>How many are you?</label>
-                  <input id="attendies" class="form-control" list="attendies-list" />
+                  <input id="attendies" class="form-control" list="attendies-list"   />
                   <datalist id="attendies-list">
                     <option> 1 </option>
                     <option> 2 </option>
@@ -24,7 +24,7 @@
               </div>
               <div class="form-group">
                 <label>When are you coming?</label>
-                <input type="text" id="reservation-time" class="form-control" />
+                <input type="text" id="reservation-time" class="form-control"  />
               </div>
               <div class="form-group">
                   <label>Which hour do you want?</label>
@@ -42,7 +42,7 @@
               </div>
               
               <div id="buttons">
-                  <button id="add-btn" class="btn yellow">Approve Reservation</button>
+                  <div id="add-btn" class="btn yellow" (click)="onReservation()">Approve Reservation</div>
                   <span class="shadow"></span>
 
              
