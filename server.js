@@ -67,11 +67,16 @@ io.on('connection', function(socket) {
 	socket.on('table-select', function(tableChange) {
 		//broadcast the rest of the users
 		socket.broadcast.emit('table-changed',{ description: tableChange})
-	 });
+	 })
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {
 	   console.log('A user disconnected');
-	});
+	})
+	socket.on('table-approve', function(tableApproved){
+		tablesJSON[tableApproved].status=2
+		console.log(tablesJSON)
+		socket.broadcast.emit("all-tables-broadcast",{ description: tablesJSON })
+	})
  });
  
 

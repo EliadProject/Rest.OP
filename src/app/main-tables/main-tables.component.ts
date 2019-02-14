@@ -60,17 +60,25 @@ export class MainTablesComponent implements OnInit {
     })
   
   
-    //get all changes of tables within database  
+    //get all changes when loging in
     this.sockets
     .allTables()
-    .subscribe(msg => { 
+    .subscribe(tables => { 
     //change table selected by other
     
-    this.tablesLogic.tables = msg
+    this.tablesLogic.tables = tables
     
     
       
     });
+
+    //get all changes of tables anytime 
+    this.sockets.
+    allTablesBroadcast().
+    subscribe(tables => {
+      this.tablesLogic.tables = tables
+      console.log(tables)
+    })
 
     
     }

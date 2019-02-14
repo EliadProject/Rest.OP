@@ -34,9 +34,12 @@ export class TableSocket {
         .fromEvent<any>("all-tables")
         .pipe(map(data => data.description));
 }
+  allTablesBroadcast() {
+  return this.socket
+      .fromEvent<any>("all-tables-broadcast")
+      .pipe(map(data => data.description));
+}
   //
-  allTablesChanged(){
-
-  }
+ 
 
 }
