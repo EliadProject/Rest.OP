@@ -5,7 +5,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
 const bodyParser = require('body-parser');
-
+var mongoose = require('mongoose');
 
 
 
@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const api = require('./backend/routes/api');
 //const socket_tables = require('./backend/tables-socket');
 
-var tables = require('./routes/tables');
+var tables = require('./db/tables');
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -45,6 +45,30 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
+ 
+mongoose.connect('mongodb://localhost/testRest', function (err) {
+    if (err) throw err;
+     
+    console.log('Successfully connected');
+	 
+
+tablesJSON = [];
+
+    tables.find({
+		
+    }).exec(function(err, res) {
+		if (err) throw err;
+			
+		tablesJSON = res;
+        //console.log(res);
+    });
+	 
+
+
+});
+
+
+
 //Dummy Tables
 tablesJSON = [{
 	"id":1,
@@ -55,6 +79,7 @@ tablesJSON = [{
 	"status":1  },{"id":5,
 	"status":1  },{"id":6,
 	"status":1  }]
+
 
 //Generate Tables
 //let tables = JSON.parse(tablesJSON);
