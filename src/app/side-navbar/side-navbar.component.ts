@@ -28,7 +28,7 @@ export class SideNavbarComponent implements OnInit {
     reservation.attendies = this.attendies
     reservation.selectedTable = this.tablesLogic.selectedTable
     
-    //emit socket
+    //Emit socket
     this.tableSockets.tableApproved(reservation.selectedTable);
 
 

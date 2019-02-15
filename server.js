@@ -48,7 +48,7 @@ io.set('origins', '*:*');
 //Dummy Tables
 tablesJSON = [{
 	"id":1,
-	"status":2
+	"status":1
 	},{"id":2,
 	"status":1  },{"id":3,
 	"status":1  },{"id":4,
@@ -73,9 +73,10 @@ io.on('connection', function(socket) {
 	   console.log('A user disconnected');
 	})
 	socket.on('table-approve', function(tableApproved){
-		tablesJSON[tableApproved].status=2
+		tablesJSON[tableApproved-1].status=2
 		console.log(tablesJSON)
-		socket.broadcast.emit("all-tables-broadcast",{ description: tablesJSON })
+		//broadcast everyone
+		io.sockets.emit("all-tables-broadcast",{ description: tablesJSON })
 	})
  });
  
