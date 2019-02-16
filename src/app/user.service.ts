@@ -12,6 +12,7 @@ export class CustomerService {
   }
 
   isLogged() {
-    return localStorage.getItem(TOKEN) != null;
+    //return localStorage.getItem(TOKEN) != null;
+    return false;
   }
 }

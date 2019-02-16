@@ -19,12 +19,12 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
 
 const appRoutes: Routes = [
   {
-    path: 'main',
+    path: 'mainTables',
     component: MainTablesComponent,
     canActivate: [NeedAuthGuard]
   },
   {
-    path: 'login',
+    path: 'Login',
     component: LoginComponent
   },
 ];
@@ -49,7 +49,8 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    SocketIoModule.forRoot(config) 
+    SocketIoModule.forRoot(config), 
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [],
   bootstrap: [AppComponent]

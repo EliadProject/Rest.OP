@@ -64,9 +64,9 @@ app.use(express.static(path.join(__dirname, 'dist/my-app')));
 app.use('/api', tables);
 
 // Catch all other routes and return the index file
-app.get('*', (req, res) => {
+app.get('/mainTables', (req, res) => {
   //res.sendfile("client-test.html")
-  res.sendFile(path.join(__dirname, 'dist/my-app/login.html'));
+  res.sendFile(path.join(__dirname, 'dist/my-app/index.html'));
 });
 
 /**
