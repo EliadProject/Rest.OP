@@ -2,50 +2,13 @@
 const express = require('express')
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const io = require('socket.io')(http).listen(http);
 const path = require('path');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-
-
-// Get our API routes
-const api = require('./backend/routes/api');
-//const socket_tables = require('./backend/tables-socket');
-
-var tables = require('./db/tables');
-
-// Parsers for POST data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// Point static path to dist
-app.use(express.static(path.join(__dirname, 'dist/my-app')));
-
-// Set our api routes
-app.use('/api', tables);
-
-// Catch all other routes and return the index file
-app.get('*', (req, res) => {
-  //res.sendfile("client-test.html")
-  res.sendFile(path.join(__dirname, 'dist/my-app/index.html'));
-});
-
-/**
- * Get port from environment and store in Express.
- */
-const port = process.env.PORT || '3000';
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-
-io.set('origins', '*:*');
-
- 
-/*
 mongoose.connect('mongodb://localhost/testRest', function (err) {
     if (err) throw err;
      
@@ -63,10 +26,61 @@ tablesJSON = [];
         //console.log(res);
     });
 	 
-
-
 });
-*/
+
+var db = mongoose.connection;
+
+//use sessions for tracking logins
+app.use(session({
+	secret: 'EliadHayAmir',
+	resave: true,
+	saveUninitialized: false,
+	store: new MongoStore({
+	  mongooseConnection: db
+	})
+}));
+
+// Get our API routes
+const api = require('./backend/routes/api');
+//const socket_tables = require('./backend/tables-socket');
+
+// import db module
+var tables = require('./db/tables');
+
+// import users logic
+var users = require('./users/userDB');
+var users = require('./users/user');
+app.use('/', users);
+
+
+// Parsers for POST data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Point static path to dist
+app.use(express.static(path.join(__dirname, 'dist/my-app')));
+
+// Set our api routes
+app.use('/api', tables);
+
+// Catch all other routes and return the index file
+app.get('*', (req, res) => {
+  //res.sendfile("client-test.html")
+  res.sendFile(path.join(__dirname, 'dist/my-app/login.html'));
+});
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = process.env.PORT || '3000';
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+
+io.set('origins', '*:*');
 
 
 //Dummy Tables
