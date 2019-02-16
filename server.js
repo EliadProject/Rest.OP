@@ -84,14 +84,36 @@ tablesJSON = [{
 //Generate Tables
 //let tables = JSON.parse(tablesJSON);
 
+var eventsTempStatus = {}
 
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
 	console.log('A user connected')
+	//get next event
+	let nextEventID = 555
+	//if room is state list is not exist, create one
+	if(!eventsTempStatus.nextEventID)
+		eventsTempStatus.nextEventID= []
+	//join user to room by next event
+	socket.join(nextEventID)
+	//user joined, send all tables status by event id 
 	socket.emit("all-tables",{ description: tablesJSON })
-	socket.on('table-select', function(tableChange) {
-		//broadcast the rest of the users
-		socket.broadcast.emit('table-changed',{ description: tableChange})
+	//send all temporary data of next event
+	socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] } )
+
+	//on select, update hash table of 
+	socket.on('table-select', function(tableChangeOperation) {
+		//extract eventID
+		let eventID = tableChangeOperation.eventID
+		let tableChange = tableChangeOperation.tableChange
+		//if temp data is not exists, create 
+		if(!eventsTempStatus.eventID)
+		eventsTempStatus.eventID = [] 
+		
+		//add to temp
+		eventsTempStatus.eventID.push(tableChange.newTable)
+		//broadcast all changes to users within room
+		socket.broadcast.to(eventID).emit('table-changed',{ description: tableChange})
 	 })
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {

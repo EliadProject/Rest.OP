@@ -4,6 +4,7 @@ import {Table} from '../table'
 import {TablesLogicService} from '../tables-logic.service'
 import {TableChange} from '../tableChange';
 import { takeLast } from 'rxjs/operators';
+import { TableChangeOperation } from '../tableChangeOperation';
 
 
 @Component({
@@ -25,10 +26,15 @@ export class MainTablesComponent implements OnInit {
   onSelect(table: Table) : void {
     if(this.tablesLogic.isAllowSelect){
     this.tablesLogic.selectedTable = table.id;
-    this.jsonTable = { lastTable: this.lastTable , newTable: table.id};
-    this.lastTable = table.id;
 
-    this.sockets.tableSelected(this.jsonTable);
+    let tableChangeOperaton = new TableChangeOperation()
+    tableChangeOperaton.eventID = this.tablesLogic.eventID
+    tableChangeOperaton.tableChange = new TableChange()
+    tableChangeOperaton.tableChange.lastTable = this.lastTable;
+    tableChangeOperaton.tableChange.newTable = table.id;
+    
+
+    this.sockets.tableSelected(tableChangeOperaton);
     }
   }
   getMockTables() : void {
@@ -55,18 +61,20 @@ export class MainTablesComponent implements OnInit {
     .tableChanged()
     .subscribe(msg => { 
       //change table selected by other
-      let lastIndex = this.tablesLogic.selectedByOther.indexOf(msg.lastTable) ;
+      let tableChange =  msg.tableChange 
+      let lastIndex = this.tablesLogic.selectedByOther.indexOf(tableChange.lastTable) ;
       if(lastIndex  !== -1){ // Not contains msg number
         this.tablesLogic.selectedByOther.splice(lastIndex,1);   
       }
-      this.tablesLogic.selectedByOther.push(msg.newTable);
+      this.tablesLogic.selectedByOther.push(msg.tableChange.newTable);
     })
   
   
     //get all changes when loging in
     this.sockets
     .allTables()
-    .subscribe(tables => { 
+    .subscribe(tables => {
+
     //change table selected by other  
     this.tablesLogic.tables = tables;
   
@@ -77,7 +85,14 @@ export class MainTablesComponent implements OnInit {
     allTablesBroadcast().
     subscribe(tables => {
       this.tablesLogic.tables = tables
-      console.log(tables)
+     
+    })
+
+    this.sockets.
+    allTablesTemp().
+    subscribe(selectedByOther => {
+      this.tablesLogic.selectedByOther = selectedByOther
+     
     })
 
     

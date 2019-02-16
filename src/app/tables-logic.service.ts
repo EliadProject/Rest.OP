@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Table } from './table';
-import { TablesMock } from './tables-mock'
+import { TablesMock } from './tables-mock';
 @Injectable({
   providedIn: 'root'
 })
 export class TablesLogicService {
   
+  eventID : number;
   isAllowSelect : Boolean=true;
   tables: Table[]
   selectedTable : number
