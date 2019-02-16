@@ -97,11 +97,11 @@ io.on('connection', function(socket) {
 		eventsTempStatus.nextEventID= []
 		*/
 	//join user to room by next event
-	/*
-	if(io.nsps['/'].adapter.rooms[nextEventID] && io.nsps['/'].adapter.rooms[nextEventID].length >= 1) nextEventID++;
+	
+	if(io.nsps['/'].adapter.rooms[nextEventID] && io.nsps['/'].adapter.rooms[nextEventID].length > 1) nextEventID++;
 	console.log("Hello new user, you are at room: " + nextEventID)
 	socket.join(nextEventID)
-	*/
+	
 	//user joined, send all tables status by event id 
 	socket.emit("all-tables",{ description: tablesJSON })
 	//send all temporary data of next event
@@ -113,7 +113,20 @@ io.on('connection', function(socket) {
 	  //let eventID = tableChangeOperation.eventID
 		//console.log(eventID)
 		
-		console.log(tableChange)
+		/*
+		Object.keys(socket.rooms).forEach(function(room, idx) {
+			if(idx!=0){
+					console.log(idx,"-->",room.)
+			}
+	 })
+	 */
+	 Object.keys(socket.rooms).forEach(function(room){
+		socket.to(room).emit('table-changed',{ description: tableChange})
+		//io.in(room).emit('table-changed',{ description: tableChange})
+});
+		
+		
+		
 		//if temp data is not exists, create 
 		/*
 		if(!eventsTempStatus.eventID)
@@ -122,7 +135,7 @@ io.on('connection', function(socket) {
 		//add to temp
 		//eventsTempStatus.eventID.push(tableChange.newTable)
 		//broadcast all changes to users within room
-		socket.broadcast.emit('table-changed',{ description: tableChange})
+		//socket.broadcast.emit('table-changed',{ description: tableChange})
 	 })
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {
