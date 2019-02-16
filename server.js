@@ -85,35 +85,44 @@ tablesJSON = [{
 //let tables = JSON.parse(tablesJSON);
 
 var eventsTempStatus = {}
-
+var nextEventID = 555
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
-	console.log('A user connected')
+	
 	//get next event
-	let nextEventID = 555
+
 	//if room is state list is not exist, create one
+	/*
 	if(!eventsTempStatus.nextEventID)
 		eventsTempStatus.nextEventID= []
+		*/
 	//join user to room by next event
+	/*
+	if(io.nsps['/'].adapter.rooms[nextEventID] && io.nsps['/'].adapter.rooms[nextEventID].length >= 1) nextEventID++;
+	console.log("Hello new user, you are at room: " + nextEventID)
 	socket.join(nextEventID)
+	*/
 	//user joined, send all tables status by event id 
 	socket.emit("all-tables",{ description: tablesJSON })
 	//send all temporary data of next event
-	socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] } )
+	//socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] } )
 
 	//on select, update hash table of 
-	socket.on('table-select', function(tableChangeOperation) {
+	socket.on('table-select', function(tableChange) {
 		//extract eventID
-		let eventID = tableChangeOperation.eventID
-		let tableChange = tableChangeOperation.tableChange
+	  //let eventID = tableChangeOperation.eventID
+		//console.log(eventID)
+		
+		console.log(tableChange)
 		//if temp data is not exists, create 
+		/*
 		if(!eventsTempStatus.eventID)
 		eventsTempStatus.eventID = [] 
-		
+		*/
 		//add to temp
-		eventsTempStatus.eventID.push(tableChange.newTable)
+		//eventsTempStatus.eventID.push(tableChange.newTable)
 		//broadcast all changes to users within room
-		socket.broadcast.to(eventID).emit('table-changed',{ description: tableChange})
+		socket.broadcast.emit('table-changed',{ description: tableChange})
 	 })
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {

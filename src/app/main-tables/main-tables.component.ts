@@ -25,18 +25,14 @@ export class MainTablesComponent implements OnInit {
 
   onSelect(table: Table) : void {
     if(this.tablesLogic.isAllowSelect){
-    this.tablesLogic.selectedTable = table.id;
-
-    let tableChangeOperaton = new TableChangeOperation()
-    tableChangeOperaton.eventID = this.tablesLogic.eventID
-    tableChangeOperaton.tableChange = new TableChange()
-    tableChangeOperaton.tableChange.lastTable = this.lastTable;
-    tableChangeOperaton.tableChange.newTable = table.id;
+        this.tablesLogic.selectedTable = table.id;
+        this.jsonTable = { lastTable: this.lastTable , newTable: table.id};
+        this.lastTable = table.id;
     
-
-    this.sockets.tableSelected(tableChangeOperaton);
-    }
+        this.sockets.tableSelected(this.jsonTable);
+    
   }
+}
   getMockTables() : void {
     this.tablesLogic.tables = this.tablesLogic.getTables();
     
@@ -56,18 +52,17 @@ export class MainTablesComponent implements OnInit {
   ngOnInit() {
   //  this.getTables();
     
-    //get changes from users trying to choose table
-    this.sockets
-    .tableChanged()
-    .subscribe(msg => { 
-      //change table selected by other
-      let tableChange =  msg.tableChange 
-      let lastIndex = this.tablesLogic.selectedByOther.indexOf(tableChange.lastTable) ;
-      if(lastIndex  !== -1){ // Not contains msg number
-        this.tablesLogic.selectedByOther.splice(lastIndex,1);   
-      }
-      this.tablesLogic.selectedByOther.push(msg.tableChange.newTable);
-    })
+     //get changes from users trying to choose table
+     this.sockets
+     .tableChanged()
+     .subscribe(msg => { 
+       //change table selected by other
+       let lastIndex = this.tablesLogic.selectedByOther.indexOf(msg.lastTable) ;
+       if(lastIndex  !== -1){ // Not contains msg number
+         this.tablesLogic.selectedByOther.splice(lastIndex,1);   
+       }
+       this.tablesLogic.selectedByOther.push(msg.newTable);
+     })
   
   
     //get all changes when loging in
@@ -87,13 +82,14 @@ export class MainTablesComponent implements OnInit {
       this.tablesLogic.tables = tables
      
     })
-
+/*
     this.sockets.
     allTablesTemp().
     subscribe(selectedByOther => {
       this.tablesLogic.selectedByOther = selectedByOther
      
     })
+    */
 
     
     }

@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { map } from 'rxjs/operators';
 import {TableOperation} from './tableOperation';
 import { TableChangeOperation } from './tableChangeOperation';
+import { TableChange } from './tableChange';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class TableSocket {
   constructor(private socket: Socket) { }
  
   //user selected table
-  tableSelected(tableSelected: TableChangeOperation){
+  tableSelected(tableSelected: TableChange){
     //Create table operation
     
     this.socket.emit("table-select", tableSelected);
@@ -42,12 +43,14 @@ export class TableSocket {
       .fromEvent<any>("all-tables-broadcast")
       .pipe(map(data => data.description));
 }
+/*
 allTablesTemp() {
   return this.socket
       .fromEvent<any>("all-temp-status")
       .pipe(map(data => data.description));
 }
-  //
+*/
+  
  
 
 }
