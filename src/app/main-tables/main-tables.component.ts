@@ -66,7 +66,7 @@ export class MainTablesComponent implements OnInit {
     .subscribe(tables => { 
     //change table selected by other
     
-    this.tablesLogic.tables = tables
+    this.tablesLogic.tables = tables;
     
     
       

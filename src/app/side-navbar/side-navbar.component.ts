@@ -12,7 +12,6 @@ export class SideNavbarComponent implements OnInit {
   constructor(private tablesLogic : TablesLogicService, private tableSockets : TableSocket ) { }
 
   ngOnInit() {
-  
   }
   name : string = ""
   time : number  = Date.now()
@@ -22,7 +21,7 @@ export class SideNavbarComponent implements OnInit {
   onReservation(){
    
     //Packaging the data to Reservation Object
-    let reservation = new Reservation()
+    const reservation = new Reservation()
     reservation.name = this.name
     reservation.time = this.time
     reservation.attendies = this.attendies

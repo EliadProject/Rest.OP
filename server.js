@@ -45,6 +45,7 @@ app.set('port', port);
 io.set('origins', '*:*');
 
  
+/*
 mongoose.connect('mongodb://localhost/testRest', function (err) {
     if (err) throw err;
      
@@ -65,7 +66,7 @@ tablesJSON = [];
 
 
 });
-
+*/
 
 
 //Dummy Tables
