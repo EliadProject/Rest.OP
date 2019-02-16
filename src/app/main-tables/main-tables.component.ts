@@ -3,6 +3,7 @@ import { TableSocket } from '../tables-socket.service';
 import {Table} from '../table'
 import {TablesLogicService} from '../tables-logic.service'
 import {TableChange} from '../tableChange';
+import { takeLast } from 'rxjs/operators';
 
 
 @Component({
@@ -22,11 +23,13 @@ export class MainTablesComponent implements OnInit {
   jsonTable: TableChange;
 
   onSelect(table: Table) : void {
+    if(this.tablesLogic.isAllowSelect){
     this.tablesLogic.selectedTable = table.id;
     this.jsonTable = { lastTable: this.lastTable , newTable: table.id};
     this.lastTable = table.id;
 
     this.sockets.tableSelected(this.jsonTable);
+    }
   }
   getMockTables() : void {
     this.tablesLogic.tables = this.tablesLogic.getTables();
@@ -64,12 +67,9 @@ export class MainTablesComponent implements OnInit {
     this.sockets
     .allTables()
     .subscribe(tables => { 
-    //change table selected by other
-    
+    //change table selected by other  
     this.tablesLogic.tables = tables;
-    
-    
-      
+  
     });
 
     //get all changes of tables anytime 

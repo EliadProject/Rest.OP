@@ -29,7 +29,8 @@ export class SideNavbarComponent implements OnInit {
     
     //Emit socket
     this.tableSockets.tableApproved(reservation.selectedTable);
-
+    //User is not allow to reserve another table
+    this.tablesLogic.isAllowSelect = false
 
   
   }

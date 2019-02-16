@@ -6,7 +6,7 @@ import { TablesMock } from './tables-mock'
 })
 export class TablesLogicService {
   
-
+  isAllowSelect : Boolean=true;
   tables: Table[]
   selectedTable : number
   selectedByOther : number[] = []
