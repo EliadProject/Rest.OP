@@ -65,7 +65,7 @@ export class MainTablesComponent implements OnInit {
      })
   
   
-    //get all changes when loging in
+    //get all changes when connecting
     this.sockets
     .allTables()
     .subscribe(tables => {
@@ -82,14 +82,15 @@ export class MainTablesComponent implements OnInit {
       this.tablesLogic.tables = tables
      
     })
-/*
+
+    //retrieving temporary data of tables when connecting
     this.sockets.
     allTablesTemp().
     subscribe(selectedByOther => {
       this.tablesLogic.selectedByOther = selectedByOther
      
     })
-    */
+    
 
     
     }

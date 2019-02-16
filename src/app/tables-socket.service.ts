@@ -43,13 +43,13 @@ export class TableSocket {
       .fromEvent<any>("all-tables-broadcast")
       .pipe(map(data => data.description));
 }
-/*
+
 allTablesTemp() {
   return this.socket
       .fromEvent<any>("all-temp-status")
       .pipe(map(data => data.description));
 }
-*/
+
   
  
 

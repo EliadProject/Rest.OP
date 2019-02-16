@@ -89,53 +89,43 @@ var nextEventID = 555
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
 	
-	//get next event
 
+	//amir - I need here the closest event to the current date 
+	
 	//if room is state list is not exist, create one
-	/*
 	if(!eventsTempStatus.nextEventID)
 		eventsTempStatus.nextEventID= []
-		*/
+		
 	//join user to room by next event
-	
-	if(io.nsps['/'].adapter.rooms[nextEventID] && io.nsps['/'].adapter.rooms[nextEventID].length > 1) nextEventID++;
 	console.log("Hello new user, you are at room: " + nextEventID)
 	socket.join(nextEventID)
 	
+  //amir - i need here query of all tables within eventID 
+
 	//user joined, send all tables status by event id 
 	socket.emit("all-tables",{ description: tablesJSON })
+	
 	//send all temporary data of next event
-	//socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] } )
+	socket.emit("all-temp-status", { description: eventsTempStatus.nextEventID } )
 
 	//on select, update hash table of 
 	socket.on('table-select', function(tableChange) {
-		//extract eventID
-	  //let eventID = tableChangeOperation.eventID
-		//console.log(eventID)
+		//update the status in the list 
 		
-		/*
-		Object.keys(socket.rooms).forEach(function(room, idx) {
-			if(idx!=0){
-					console.log(idx,"-->",room.)
-			}
-	 })
-	 */
+		//insert new value to list
+		eventsTempStatus.nextEventID.push(tableChange.newTable)
+		///remove old value from list
+		let lastIndex = eventsTempStatus.nextEventID.indexOf(tableChange.lastTable) ;
+       if(lastIndex  !== -1){ // only if  appear in the array
+				eventsTempStatus.nextEventID.splice(lastIndex,1);   
+			 }
+			 
+	 //broadcast the change to other sockets within room
 	 Object.keys(socket.rooms).forEach(function(room){
 		socket.to(room).emit('table-changed',{ description: tableChange})
-		//io.in(room).emit('table-changed',{ description: tableChange})
+	
 });
-		
-		
-		
-		//if temp data is not exists, create 
-		/*
-		if(!eventsTempStatus.eventID)
-		eventsTempStatus.eventID = [] 
-		*/
-		//add to temp
-		//eventsTempStatus.eventID.push(tableChange.newTable)
-		//broadcast all changes to users within room
-		//socket.broadcast.emit('table-changed',{ description: tableChange})
+		 
 	 })
 	//Whenever someone disconnects this piece of code executed
 	socket.on('disconnect', function () {
