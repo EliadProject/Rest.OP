@@ -90,6 +90,14 @@ export class MainTablesComponent implements OnInit {
       this.tablesLogic.selectedByOther = selectedByOther
      
     })
+
+    //clean selected by other list when change event(room)
+    this.sockets.
+    userChangedRoom().
+    subscribe( data => {
+      console.log("cleaned selected by other")
+      this.tablesLogic.selectedByOther = []
+    })
     
 
     

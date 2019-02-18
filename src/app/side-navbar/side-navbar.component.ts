@@ -3,6 +3,10 @@ import {TablesLogicService} from '../tables-logic.service'
 import { FormsModule } from '@angular/forms';
 import {Reservation} from '../reservation'
 import {TableSocket} from '../tables-socket.service'
+import { ChangeEventJSON } from '../change-event-json'
+import { EventsMock } from '../events-mock'
+import { Event } from '../event'
+
 @Component({
   selector: 'app-side-navbar',
   templateUrl: './side-navbar.component.html',
@@ -12,9 +16,11 @@ export class SideNavbarComponent implements OnInit {
   constructor(private tablesLogic : TablesLogicService, private tableSockets : TableSocket ) { }
 
   ngOnInit() {
+   this.events = EventsMock
   }
+  events : Event[] 
   name : string = ""
-  time : number  = Date.now()
+  eventTime : number  = Date.now()
   attendies : number
   
 
@@ -23,7 +29,7 @@ export class SideNavbarComponent implements OnInit {
     //Packaging the data to Reservation Object
     const reservation = new Reservation()
     reservation.name = this.name
-    reservation.time = this.time
+    reservation.time = this.eventTime
     reservation.attendies = this.attendies
     reservation.selectedTable = this.tablesLogic.selectedTable
     
@@ -32,7 +38,23 @@ export class SideNavbarComponent implements OnInit {
     //User is not allow to reserve another table
     this.tablesLogic.isAllowSelect = false
 
-  
+  }
+
+  onChangeEventTime(event : Event){
+
+    //change eventTime variable
+    this.eventTime = event.eventTime
+    console.log("Event time is: " + this.eventTime)
+    
+    //create json to deliver to socket
+    console.log("selected table :" + this.tablesLogic.selectedTable)
+    let onChangeEvent : ChangeEventJSON = { eventID: event.id , selectedTable: this.tablesLogic.selectedTable};
+    console.log("json is : " + onChangeEvent)
+
+    //emit socket with json
+    this.tableSockets.changeEventTime(onChangeEvent)
+    
+    
   }
   
 }

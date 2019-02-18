@@ -121,10 +121,62 @@ io.on('connection', function(socket) {
 			 }
 			 
 	 //broadcast the change to other sockets within room
-	 Object.keys(socket.rooms).forEach(function(room){
-		socket.to(room).emit('table-changed',{ description: tableChange})
+	 let roomID=  Object.keys(socket.rooms)[0]
+	 socket.to(roomID).emit('table-changed',{ description: tableChange})
+
+	 
+	 
+})
+
+		 
+	 
+
+	 socket.on('change-event-time',function(data){
+		 //extract current room id from user
+		 console.log("Entered change-event-time function, hello there!")
+		 const roomID=  Object.keys(socket.rooms)[0]
+		 console.log("You room id is :"+roomID)
+		 //exit the room
+		 socket.leave(roomID);
+		
+		 //retrieve the current selected table from data 
+		 const selectedTable =  data.selectedTable
+		 console.log("selected table is :" +selectedTable)
+		 //if not null - delete it from hash map, and broadcast to ex-room
+
+		 //checks if roomID is exists
+		 if(!eventsTempStatus.roomID)
+				 eventsTempStatus.roomID = []
+		 else
+		 {
+		 	let lastIndex = eventsTempStatus.roomID.indexOf(selectedTable) ;
+		 	if(lastIndex  !== -1){ // only if  appear in the array remov from list
+			eventsTempStatus.roomID.splice(lastIndex,1);   
+		 }
+		}
+		 console.log("now the eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+		 //retrieve the new event ID from data
+		 const eventID = data.eventID
+		 console.log("event id is :"+eventID)
+
+		 //join the user to the room
+		 socket.join(eventID)
+		 
+		 //if list is not created for event key - create empty list
+		 if(!eventsTempStatus.eventID){
+			 console.log("eventID is empty")
+		   eventsTempStatus.eventID= []
+		 }
+
+		 //clean users selectedByOther 
+		  socket.emit("clean-selected-by-other",true)
+
+		 //send the user tables from db
+			socket.emit("all-tables",{ description: tablesJSON })
 	
-});
+			//send the user tables status from hash map
+			socket.emit("all-temp-status", { description: eventsTempStatus.nextEventID } )
+
 		 
 	 })
 	//Whenever someone disconnects this piece of code executed

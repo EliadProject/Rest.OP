@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import {TableOperation} from './tableOperation';
 import { TableChangeOperation } from './tableChangeOperation';
 import { TableChange } from './tableChange';
+import { ChangeEventJSON} from './change-event-json';
 
 
 @Injectable({
@@ -49,6 +50,17 @@ allTablesTemp() {
       .fromEvent<any>("all-temp-status")
       .pipe(map(data => data.description));
 }
+
+changeEventTime(onChangeEvent : ChangeEventJSON){
+  this.socket.emit("change-event-time", onChangeEvent);
+}
+userChangedRoom(){
+  return this.socket
+  .fromEvent<any>("clean-selected-by-other")
+  .pipe(map(data => data));
+}
+
+
 
   
  
