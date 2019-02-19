@@ -110,30 +110,31 @@ io.on('connection', function(socket) {
 
 	//on select, update hash table of 
 	socket.on('table-select', function(tableChange) {
-		//update the status in the list 
-		
+		//extract room ID
+		let roomID=  Object.keys(socket.rooms)[0]
+		console.log("table selected")
+  
+		//checks if roomID is exists
+		if(!eventsTempStatus.roomID)
+			eventsTempStatus.roomID = []
 		//insert new value to list
-		eventsTempStatus.nextEventID.push(tableChange.newTable)
+		console.log("Before the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+		eventsTempStatus.roomID.push(tableChange.newTable)
 		///remove old value from list
-		let lastIndex = eventsTempStatus.nextEventID.indexOf(tableChange.lastTable) ;
-       if(lastIndex  !== -1){ // only if  appear in the array
-				eventsTempStatus.nextEventID.splice(lastIndex,1);   
-			 }
-			 
-	 //broadcast the change to other sockets within room
-	 let roomID=  Object.keys(socket.rooms)[0]
-	 socket.to(roomID).emit('table-changed',{ description: tableChange})
-
-	 
-	 
+		let lastIndex = eventsTempStatus.roomID.indexOf(tableChange.lastTable) ;
+    if(lastIndex  !== -1){ // only if  appear in the array
+				eventsTempStatus.roomID.splice(lastIndex,1);   
+		}
+		console.log("After the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+	  //broadcast the change to other sockets within room
+	  socket.to(roomID).emit('table-changed',{ description: tableChange})
+	 	 
 })
 
 		 
-	 
-
 	 socket.on('change-event-time',function(data){
 		 //extract current room id from user
-		 console.log("Entered change-event-time function, hello there!")
+		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
 		 const roomID=  Object.keys(socket.rooms)[0]
 		 console.log("You room id is :"+roomID)
 		 //exit the room
@@ -155,10 +156,18 @@ io.on('connection', function(socket) {
 		 }
 		}
 		 console.log("now the eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+
+		 //update all the others users about this change if there is 
+			 if(selectedTable){
+				let tableChange = { lastTable : 0, newTable : selectedTable }
+				socket.to(roomID).emit('table-changed',{ description: tableChange})
+			}
+		
 		 //retrieve the new event ID from data
 		 const eventID = data.eventID
 		 console.log("event id is :"+eventID)
 
+		
 		 //join the user to the room
 		 socket.join(eventID)
 		 
@@ -168,14 +177,28 @@ io.on('connection', function(socket) {
 		   eventsTempStatus.eventID= []
 		 }
 
-		 //clean users selectedByOther 
+		 	//send the user tables status from hash map (before his are updated)
+			 socket.emit("all-temp-status", { description: eventsTempStatus.eventID } )
+			 
+			
+		  //update eventTempStatus.eventID about changes
+			eventsTempStatus.eventID.push(selectedTable)
+
+			console.log("now the eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+
+
+			//if there is a change send it to all users
+			if(selectedTable){
+				let tableChange = { lastTable : 0, newTable : selectedTable }
+				socket.to(eventID).emit('table-changed',{ description: tableChange})
+			}
+		  //clean users selectedByOther 
 		  socket.emit("clean-selected-by-other",true)
 
-		 //send the user tables from db
+		  //send the user tables from DB
 			socket.emit("all-tables",{ description: tablesJSON })
 	
-			//send the user tables status from hash map
-			socket.emit("all-temp-status", { description: eventsTempStatus.nextEventID } )
+		
 
 		 
 	 })
