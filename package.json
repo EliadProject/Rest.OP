@@ -23,6 +23,7 @@
     "@angular/router": "~7.1.0",
     "@material/drawer": "^0.40.0",
     "@material/list": "^0.40.0",
+    "@ng-select/ng-select": "^2.15.3",
     "bootstrap": "^4.2.1",
     "core-js": "^2.5.4",
     "express": "^4.16.4",

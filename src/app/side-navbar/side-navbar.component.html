@@ -2,7 +2,7 @@
 <hr class="style-seven">
      
          
-          <form>
+          
               <div class="form-group">
                   <label>What's your name?</label>
                   <input id="name" type="text" class="form-control"  [value]="name" (input)="name = $event.target.value" />
@@ -29,8 +29,8 @@
                   <div class="form-group">
                  
                   <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.eventTime}} </select> -->
-                  <select  (change) ="onChangeEventTime($event)" >
-                        <option [value]="evt" *ngFor="let evt of events"> {{evt.eventTime}} </option>
+                  <select [(ngModel)]="eventSelected" (ngModelChange)="onChangeEventTime($event)"   >
+                        <option (ngValue)="evt" *ngFor="let evt of events"> {{evt.eventTime}} </option>
                   </select> 
                       
                    
@@ -43,7 +43,7 @@
               </div>
 
               <div>
-                  <label> Current room is {{eventTime}} </label>
+                  <label> Current room is {{eventSelected.id}} </label>
               </div>
 
-            </form>
+            
