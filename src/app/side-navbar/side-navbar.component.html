@@ -29,8 +29,8 @@
                   <div class="form-group">
                  
                   <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.eventTime}} </select> -->
-                  <select [(ngModel)]="eventSelected" (ngModelChange)="onChangeEventTime()"   >
-                        <option (ngValue)="evt.id" *ngFor="let evt of events"> {{evt.eventTime}} </option>
+                  <select (change)="onChangeEventTime($event.target.value)"   >
+                        <option (ngValue)="evt.id" *ngFor="let evt of events"> {{evt.id}} </option>
                   </select> 
                       
                    

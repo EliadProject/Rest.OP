@@ -46,12 +46,12 @@ export class SideNavbarComponent implements OnInit {
 
   }
 
-  onChangeEventTime(){
+  onChangeEventTime(eventSelectedID : number){
   
     
     //change eventTime variable
     
-  
+    this.eventSelectedID = eventSelectedID
     console.log("event id selected is " + this.eventSelectedID)
     //create json to deliver to socket
     console.log("selected table :" + this.tablesLogic.selectedTable)
