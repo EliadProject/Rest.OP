@@ -27,9 +27,11 @@
               <div class="form-group">
                   <label>Which event would you like to join ?</label>
                   <div class="form-group">
-                    <ul  class="form-control">
-                        <li *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.eventTime}} </li>
-                    </ul>
+                 
+                  <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.eventTime}} </select> -->
+                  <select  (change) ="onChangeEventTime($event)" >
+                        <option [value]="evt" *ngFor="let evt of events"> {{evt.eventTime}} </option>
+                  </select> 
                       
                    
                   </div>

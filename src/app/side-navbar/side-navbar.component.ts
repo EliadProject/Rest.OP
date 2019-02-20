@@ -17,6 +17,7 @@ export class SideNavbarComponent implements OnInit {
 
   ngOnInit() {
    this.events = EventsMock
+   this.eventTime = this.events[0].eventTime
   }
   events : Event[] 
   name : string = ""
@@ -40,10 +41,11 @@ export class SideNavbarComponent implements OnInit {
 
   }
 
-  onChangeEventTime(event : Event){
-
+  onChangeEventTime(event : any){
+   
+    let eventE : Event =  event.target.value
     //change eventTime variable
-    this.eventTime = event.eventTime
+    this.eventTime = eventE.eventTime
     console.log("Event time is: " + this.eventTime)
     
     //create json to deliver to socket
@@ -56,5 +58,6 @@ export class SideNavbarComponent implements OnInit {
     
     
   }
+  
   
 }
