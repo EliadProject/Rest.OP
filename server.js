@@ -63,8 +63,6 @@ tablesJSON = [];
         //console.log(res);
     });
 	 
-
-
 });
 */
 
@@ -136,7 +134,7 @@ io.on('connection', function(socket) {
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
 		 const roomID=  Object.keys(socket.rooms)[0]
-		 console.log("You room id is :"+roomID)
+		 console.log("Old room id is :"+roomID)
 		 //exit the room
 		 socket.leave(roomID);
 		
@@ -155,13 +153,16 @@ io.on('connection', function(socket) {
 			eventsTempStatus.roomID.splice(lastIndex,1);   
 		 }
 		}
-		 console.log("now the eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+		
+		console.log("EventTempStatus of old room is EventTempStatus" + roomID + " looks like this: " + eventsTempStatus.roomID)
 
 		 //update all the others users about this change if there is 
 			 if(selectedTable){
 				let tableChange = { lastTable : 0, newTable : selectedTable }
 				socket.to(roomID).emit('table-changed',{ description: tableChange})
 			}
+
+
 		
 		 //retrieve the new event ID from data
 		 const eventID = data.eventID
