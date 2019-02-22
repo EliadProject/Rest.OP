@@ -1,5 +1,6 @@
   
 <section class="container-fluied">
+   <div> {{ eventPopularity}} </div>
    <div *ngFor="let table of tablesLogic.tables" (click)="onSelect(table)" >
         <ul class="circle-container" [class.selected]="table.id === tablesLogic.selectedTable" [class.selectedOther]="checkIfContains(table.id)" [class.taken]="isTaken(table)" >
             <li *ngFor="let chair of [].constructor(chairsNum)">

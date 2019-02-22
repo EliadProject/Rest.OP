@@ -21,6 +21,7 @@ export class SideNavbarComponent implements OnInit {
    this.eventSelectedID = this.events[0].id
    this.eventSelected = this.events[0]
    
+   
   }
   
   eventSelected : Event

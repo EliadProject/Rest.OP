@@ -18,10 +18,9 @@ export class MainTablesComponent implements OnInit {
   constructor(private sockets : TableSocket,private tablesLogic: TablesLogicService) {
   }
   chairsNum: number = 8;
-  
- 
   lastTable: number = 0 ;
   jsonTable: TableChange;
+  eventPopularity : number
 
   onSelect(table: Table) : void {
     if(this.tablesLogic.isAllowSelect){
@@ -95,6 +94,10 @@ export class MainTablesComponent implements OnInit {
      
     });
 
+
+    this.sockets.eventPopularity().
+    subscribe(eventPopularity => { this.eventPopularity = eventPopularity 
+    console.log("Event popularity is: " + this.eventPopularity)})
     //clean selected by other list when change event(room)
     /*
     this.sockets.
