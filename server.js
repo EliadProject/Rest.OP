@@ -91,8 +91,8 @@ io.on('connection', function(socket) {
 	//amir - I need here the closest event to the current date 
 	
 	//if room is state list is not exist, create one
-	if(!eventsTempStatus.nextEventID)
-		eventsTempStatus.nextEventID= []
+	if(!eventsTempStatus[nextEventID])
+		eventsTempStatus[nextEventID]= []
 		
 	//join user to room by next event
 	console.log("Hello new user, you are at room: " + nextEventID)
@@ -104,7 +104,7 @@ io.on('connection', function(socket) {
 	socket.emit("all-tables",{ description: tablesJSON })
 	
 	//send all temporary data of next event
-	socket.emit("all-temp-status", { description: eventsTempStatus.nextEventID } )
+	socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] } )
 
 	//on select, update hash table of 
 	socket.on('table-select', function(tableChange) {
@@ -113,17 +113,20 @@ io.on('connection', function(socket) {
 		console.log("table selected")
   
 		//checks if roomID is exists
-		if(!eventsTempStatus.roomID)
-			eventsTempStatus.roomID = []
+		if(!eventsTempStatus[roomID])
+			{
+				console.log("init event temp status for room " +roomID )
+			  eventsTempStatus[roomID] = []
+			}
 		//insert new value to list
-		console.log("Before the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
-		eventsTempStatus.roomID.push(tableChange.newTable)
+		console.log("Before the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus[roomID])
+		eventsTempStatus[roomID].push(tableChange.newTable)
 		///remove old value from list
-		let lastIndex = eventsTempStatus.roomID.indexOf(tableChange.lastTable) ;
+		let lastIndex = eventsTempStatus[roomID].indexOf(tableChange.lastTable) ;
     if(lastIndex  !== -1){ // only if  appear in the array
-				eventsTempStatus.roomID.splice(lastIndex,1);   
+				eventsTempStatus[roomID].splice(lastIndex,1);   
 		}
-		console.log("After the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+		console.log("After the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus[roomID])
 	  //broadcast the change to other sockets within room
 	  socket.to(roomID).emit('table-changed',{ description: tableChange})
 	 	 
@@ -135,6 +138,7 @@ io.on('connection', function(socket) {
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
 		 const roomID=  Object.keys(socket.rooms)[0]
 		 console.log("Old room id is :"+roomID)
+		 
 		 //exit the room
 		 socket.leave(roomID);
 		
@@ -143,56 +147,61 @@ io.on('connection', function(socket) {
 		 console.log("selected table is :" +selectedTable)
 		 //if not null - delete it from hash map, and broadcast to ex-room
 
+    
+
 		 //checks if roomID is exists
-		 if(!eventsTempStatus.roomID)
-				 eventsTempStatus.roomID = []
+		 if(!eventsTempStatus[roomID]){
+		    console.log("init event temp status for room " +roomID )
+				 eventsTempStatus[roomID] = []
+		 }
 		 else
 		 {
-		 	let lastIndex = eventsTempStatus.roomID.indexOf(selectedTable) ;
+		 	let lastIndex = eventsTempStatus[roomID].indexOf(selectedTable) ;
 		 	if(lastIndex  !== -1){ // only if  appear in the array remov from list
-			eventsTempStatus.roomID.splice(lastIndex,1);   
+			eventsTempStatus[roomID].splice(lastIndex,1);
+
 		 }
 		}
 		
-		console.log("EventTempStatus of old room is EventTempStatus" + roomID + " looks like this: " + eventsTempStatus.roomID)
+		
 
-		 //update all the others users about this change if there is 
+		 //update all the others users within in room to remove selection of this table is if selcted
 			 if(selectedTable){
-				let tableChange = { lastTable : 0, newTable : selectedTable }
+				let tableChange = { lastTable : selectedTable, newTable : 0 }
 				socket.to(roomID).emit('table-changed',{ description: tableChange})
 			}
 
+			
 
+// NOW WORKING ON NEW ROOM
 		
+
 		 //retrieve the new event ID from data
-		 const eventID = data.eventID
-		 console.log("event id is :"+eventID)
-
-		
+		 const eventID = data.eventID		
 		 //join the user to the room
 		 socket.join(eventID)
 		 
 		 //if list is not created for event key - create empty list
-		 if(!eventsTempStatus.eventID){
-			 console.log("eventID is empty")
-		   eventsTempStatus.eventID= []
-		 }
+		 if(!eventsTempStatus[eventID]){
+		   eventsTempStatus[eventID]= []
+		 };
 
-		 	//send the user tables status from hash map (before his are updated)
-			 socket.emit("all-temp-status", { description: eventsTempStatus.eventID } )
+
+		 console.log("EventTempStatus of new room is EventTempStatus." + eventID + " looks like this: " + eventsTempStatus[eventID])
+		 	//send to user tables status from hash map (before his are updated)
+			 socket.emit("all-temp-status", { description: eventsTempStatus[eventID] } )
 			 
-			
-		  //update eventTempStatus.eventID about changes
-			eventsTempStatus.eventID.push(selectedTable)
-
-			console.log("now the eventTempStatus." + roomID + " looks like this: " + eventsTempStatus.roomID)
+			//update eventTempStatus.eventID about changes if there is 
+			if(typeof selectedTable !== 'undefined')
+				eventsTempStatus[eventID].push(selectedTable)
 
 
 			//if there is a change send it to all users
 			if(selectedTable){
 				let tableChange = { lastTable : 0, newTable : selectedTable }
 				socket.to(eventID).emit('table-changed',{ description: tableChange})
-			}
+			};
+		
 		  //clean users selectedByOther 
 		  socket.emit("clean-selected-by-other",true)
 

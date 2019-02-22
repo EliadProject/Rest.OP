@@ -50,10 +50,8 @@ export class SideNavbarComponent implements OnInit {
   onChangeEventTime(){
     
     //create json to deliver to socket
-    console.log("selected table :" + this.tablesLogic.selectedTable)
     let onChangeEvent : ChangeEventJSON = { eventID: this.eventSelected.id , selectedTable: this.tablesLogic.selectedTable};
-    console.log("json is : " + onChangeEvent)
-
+  
     //emit socket with json
     this.tableSockets.changeEventTime(onChangeEvent)
     
