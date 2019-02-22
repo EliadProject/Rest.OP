@@ -8,10 +8,10 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getAll() {
-        return this.http.get<User[]>(`http://localhost:4200/users`);
+        return this.http.get<User[]>(`http://localhost:3000/users`);
     }
 
     getById(id: number) {
-        return this.http.get<User>(`http://localhost:4200/users/${id}`);
+        return this.http.get<User>(`http://localhost:3000/users/${id}`);
     }
 }

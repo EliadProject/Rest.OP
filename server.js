@@ -1,4 +1,5 @@
 // Get dependencies
+require('rootpath')();
 const express = require('express')
 const app = express();
 const http = require('http').Server(app);
@@ -6,11 +7,9 @@ const io = require('socket.io')(http);
 const path = require('path');
 const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+const cors = require('cors');
+const errorHandler = require('src/app/helpers/error-handler');
 
-
-
-// Get our API routes
-const api = require('./backend/routes/api');
 //const socket_tables = require('./backend/tables-socket');
 
 var tables = require('./db/tables');
@@ -18,6 +17,13 @@ var tables = require('./db/tables');
 // Parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+
+// api routes
+app.use('/users', require('src/app/users/users.controller'));
+
+// global error handler
+app.use(errorHandler);
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist/my-app')));
