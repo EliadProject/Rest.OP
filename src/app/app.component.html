@@ -3,13 +3,12 @@
 <div class="container-fluid ">
   <div class="row">
     <div class="col-2 text-center" id="side-bar"> 
-      <app-side-navbar>
+      <app-side-navbar *ngIf="router.url.includes('mainTables')">
      
       </app-side-navbar>
 
     </div>
     <div class="col-10">
-    
       <router-outlet></router-outlet>
     </div>
   </div>

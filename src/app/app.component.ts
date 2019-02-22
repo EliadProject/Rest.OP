@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from 'node_modules/@angular/router';
 
 
 
@@ -8,5 +9,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'my-app';
+  title = 'my app';
+
+  constructor( public router: Router){
+  }
 }

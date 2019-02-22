@@ -1,6 +1,8 @@
 <div class="container">
   <nav class="navbar ">
       <a class="navbar-brand" href="#">Rest.io</a>
+      <a class="navbar-brand" href="/barChart" *ngIf="!router.url.includes('barChart')">Statistics</a>
+      <a class="navbar-brand" href="/mainTables" *ngIf="router.url.includes('barChart')">Main</a>
       <div id="dayStatus">
       </div>
   </nav>

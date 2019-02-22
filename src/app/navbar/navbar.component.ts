@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from 'node_modules/@angular/router';
 import * as $ from 'jquery';
 
 @Component({
@@ -11,7 +12,7 @@ export class NavbarComponent implements OnInit {
   //private BURGER = require("./images/burger.png");
   //private BEER = require("./images/beer.png");
   
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit() {
       var thehours = new Date().getHours();
