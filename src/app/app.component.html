@@ -3,7 +3,7 @@
 <div class="container-fluid ">
   <div class="row">
     <div class="col-2 text-center" id="side-bar"> 
-      <app-side-navbar *ngIf="router.url.includes('mainTables')">
+      <app-side-navbar *ngIf="!router.url.includes('login') && !router.url.includes('barChart')">
      
       </app-side-navbar>
 
@@ -13,6 +13,6 @@
     </div>
   </div>
   <br /><br />
-  <app-footer></app-footer>
+  <app-footer *ngIf="!router.url.includes('login')"></app-footer>
 </div> 
 
