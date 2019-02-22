@@ -37,6 +37,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/my-app/index.html'));
 });
 
+app.post('*', (req, res) => {
+  res.send('post works');
+});
+
 /**
  * Get port from environment and store in Express.
  */
@@ -50,11 +54,11 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
-
-mongoose.connect('mongodb://localhost/testRest', function (err) {
+//mongodb://localhost/testRest
+mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true', function (err) {
     if (err) throw err;
      
-    console.log('Successfully connected');
+    console.log('Successfully connected - MongoDB');
 	 
 });
 
