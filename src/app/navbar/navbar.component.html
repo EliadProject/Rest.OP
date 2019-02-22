@@ -1,6 +1,9 @@
 <div class="container">
   <nav class="navbar ">
-      <a class="navbar-brand" href="#">Rest.io</a>
+      <a class="navbar-brand" href="/">Rest.io</a>
+      <a class="navbar-brand" href="/barChart" *ngIf="!router.url.includes('barChart') && !router.url.includes('login')">Statistics</a>
+      <a class="navbar-brand" routerLink="/admin" *ngIf="isAdmin">Admin</a>
+      <a class="navbar-brand" href="#" (click)="logout()">Logout</a>
       <div id="dayStatus">
       </div>
   </nav>

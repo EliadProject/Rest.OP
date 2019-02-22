@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from 'node_modules/@angular/router';
 import * as $ from 'jquery';
+import { AuthenticationService } from 'src/app/services';
+import { User, Role } from 'src/app/models';
 
 @Component({
   selector: 'app-navbar',
@@ -10,8 +13,11 @@ export class NavbarComponent implements OnInit {
   //private COFFEE = require("./images/coffee.png");
   //private BURGER = require("./images/burger.png");
   //private BEER = require("./images/beer.png");
-  
-  constructor() { }
+  currentUser: User;
+
+  constructor(public router: Router, private authenticationService: AuthenticationService) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+   }
 
   ngOnInit() {
       var thehours = new Date().getHours();
@@ -35,5 +41,14 @@ export class NavbarComponent implements OnInit {
 
       $('#dayStatus').append(themessage);
   }
+
+  get isAdmin() {
+    return this.currentUser && this.currentUser.role === Role.Admin;
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
+}
 
 }

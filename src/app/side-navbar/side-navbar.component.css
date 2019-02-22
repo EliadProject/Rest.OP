@@ -32,7 +32,7 @@ hr.style-seven:before { /* Not really supposed to work, but does */
     -moz-box-shadow: 5px 5px 0 rgba(63,107,169, 0.5);
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
-    margin: 20px 10px 0 0;
+    margin: 20px 10px 10px 0;
 
 }
 
