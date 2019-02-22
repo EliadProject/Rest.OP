@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -12,6 +11,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { MainTablesComponent } from './main-tables/main-tables.component';
 import { FooterComponent } from './footer/footer.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { FormsModule } from '@angular/forms';
+
 
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
     BarChartComponent,
     MainTablesComponent,
     FooterComponent,
+    
 
   ],
   imports: [
@@ -46,6 +48,7 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    FormsModule,
     SocketIoModule.forRoot(config) 
   ],
   providers: [],

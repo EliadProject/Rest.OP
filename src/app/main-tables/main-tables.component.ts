@@ -46,6 +46,7 @@ export class MainTablesComponent implements OnInit {
   }
 
   checkIfContains(tableId: number) : boolean {
+
     return (this.tablesLogic.selectedByOther.indexOf(tableId) != -1);
   }
 
@@ -87,13 +88,25 @@ export class MainTablesComponent implements OnInit {
     this.sockets.
     allTablesTemp().
     subscribe(selectedByOther => {
+      
+      console.log("got temp data from server" + selectedByOther)
       this.tablesLogic.selectedByOther = selectedByOther
+      console.log("selectedByOther table is " + this.tablesLogic.selectedByOther)
      
+    });
+
+    //clean selected by other list when change event(room)
+    /*
+    this.sockets.
+    userChangedRoom().
+    subscribe( data => {
+      console.log("cleaned selected by other")
+      this.tablesLogic.selectedByOther = []
     })
-    
+    */
 
     
-    }
+    };
 
   }
 
