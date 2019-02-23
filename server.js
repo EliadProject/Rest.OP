@@ -59,35 +59,10 @@ io.set('origins', '*:*');
 
 
 
-//get event functions
-var EventApp = require('./backend/event');
-
-//Generate Tables
-//build tablesJSON as format : [{"id":id,"status":status},...}]
+//get functions
+var functions = require('./backend/functions/event');
 var tablesJSON = [];
-EventApp.tables()
-  .then(res => tablesJSON = res)
-  .catch(err => {
-    if (err) {
-      console.log(err);
-    }
-  });
 
-/*
-//Dummy Tables
-tablesJSON = [{
-	"id":1,
-	"status":1
-	},{"id":2,
-	"status":1  },{"id":3,
-	"status":1  },{"id":4,
-	"status":1  },{"id":5,
-	"status":1  },{"id":6,
-	"status":1  }]
- */
-
-//Generate Tables
-//let tables = JSON.parse(tablesJSON);
 
 var eventsTempStatus = {}
 var nextEventID = 1
@@ -103,24 +78,31 @@ db.once('open', function(callback) {
     //Whenever someone connects this gets executed
 	io.on('connection', function(socket) {
 	
+	//get the closest event to the current date 
+  functions.getNextEventID(function (response) {
+    nextEventID = response;
 
-	//amir - I need here the closest event to the current date 
-	
-	//if room is state list is not exist, create one
-	if(!eventsTempStatus[nextEventID])
-		eventsTempStatus[nextEventID]= []
+	  //if room is state list is not exist, create one
+	  if(!eventsTempStatus[nextEventID])
+		  eventsTempStatus[nextEventID]= []
 		
-	//join user to room by next event
-	console.log("Hello new user, you are at room: " + nextEventID)
-	socket.join(nextEventID)
-	
-  //amir - i need here query of all tables within eventID 
-  
-	//user joined, send all tables status by event id 
-	socket.emit("all-tables",{ description: tablesJSON })
-	
-	//send all temporary data of next event
-	socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] } )
+
+	  //join user to room by next event
+	  console.log("Hello new user, you are at room: " + nextEventID)
+    socket.join(nextEventID)
+
+
+    functions.getTables(nextEventID, function (response) {
+      //user joined, send all tables status by event id
+      socket.emit("all-tables", { description: response })
+    })
+
+    //send all temporary data of next event
+    socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] })
+
+  });
+
+
 
 	//on select, update hash table of 
 	socket.on('table-select', function(tableChange) {
@@ -150,8 +132,7 @@ db.once('open', function(callback) {
 	 	 
 })
 
-		 
-	 socket.on('change-event-time',function(data){
+	socket.on('change-event-time',function(data){
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
 		 let roomID=  Object.keys(socket.rooms)[0]
@@ -223,7 +204,9 @@ db.once('open', function(callback) {
 		  socket.emit("clean-selected-by-other",true)
 
 		  //send the user tables from DB
-			socket.emit("all-tables",{ description: tablesJSON })
+      functions.getTables(eventID, function (response) {
+        socket.emit("all-tables", { description: response })
+      });
 
 			//return event popularity to user
 			socket.emit("event-popularity",{ description: getCMSpopularity(eventID) })
@@ -253,10 +236,6 @@ db.once('open', function(callback) {
  });
                
 })
-
-
- 
-
 
 
 /**
