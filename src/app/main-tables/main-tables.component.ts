@@ -18,10 +18,9 @@ export class MainTablesComponent implements OnInit {
   constructor(private sockets : TableSocket,private tablesLogic: TablesLogicService) {
   }
   chairsNum: number = 8;
-  
- 
   lastTable: number = 0 ;
   jsonTable: TableChange;
+  eventPopularity : number
 
   onSelect(table: Table) : void {
     if(this.tablesLogic.isAllowSelect){
@@ -52,7 +51,11 @@ export class MainTablesComponent implements OnInit {
 
   ngOnInit() {
   //  this.getTables();
-    
+
+     //default eventPopulairty 
+     this.eventPopularity = 100
+
+
      //get changes from users trying to choose table
      this.sockets
      .tableChanged()
@@ -89,12 +92,16 @@ export class MainTablesComponent implements OnInit {
     allTablesTemp().
     subscribe(selectedByOther => {
       
-      console.log("got temp data from server" + selectedByOther)
-      this.tablesLogic.selectedByOther = selectedByOther
-      console.log("selectedByOther table is " + this.tablesLogic.selectedByOther)
      
-    });
+      this.tablesLogic.selectedByOther = selectedByOther
+   
+     
+    })
 
+
+    this.sockets.eventPopularity().
+    subscribe(eventPopularity => this.eventPopularity = eventPopularity * 100)
+    
     //clean selected by other list when change event(room)
     /*
     this.sockets.
@@ -103,10 +110,8 @@ export class MainTablesComponent implements OnInit {
       console.log("cleaned selected by other")
       this.tablesLogic.selectedByOther = []
     })
-    */
-
-    
-    };
+    */   
+    }
 
   }
 

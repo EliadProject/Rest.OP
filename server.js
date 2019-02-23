@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const cors = require('cors');
 const errorHandler = require('src/app/helpers/error-handler');
-
+var createCountMinSketch = require("count-min-sketch") 
 //const socket_tables = require('./backend/tables-socket');
 
 var event = require('./backend/routes/event');
@@ -93,7 +93,10 @@ tablesJSON = [{
 //let tables = JSON.parse(tablesJSON);
 
 var eventsTempStatus = {}
-var nextEventID = 555
+var nextEventID = 1
+//Create data structure
+var sketch = createCountMinSketch()
+
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
 	
@@ -120,23 +123,25 @@ io.on('connection', function(socket) {
 	socket.on('table-select', function(tableChange) {
 		//extract room ID
 		let roomID=  Object.keys(socket.rooms)[0]
-		console.log("table selected")
+		roomID = parseInt(roomID)
+		
+		//update CMS counter of the event of the selection 
+		sketch.update(roomID, 1)
   
 		//checks if roomID is exists
 		if(!eventsTempStatus[roomID])
 			{
-				console.log("init event temp status for room " +roomID )
+			
 			  eventsTempStatus[roomID] = []
 			}
 		//insert new value to list
-		console.log("Before the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus[roomID])
+	
 		eventsTempStatus[roomID].push(tableChange.newTable)
 		///remove old value from list
 		let lastIndex = eventsTempStatus[roomID].indexOf(tableChange.lastTable) ;
     if(lastIndex  !== -1){ // only if  appear in the array
 				eventsTempStatus[roomID].splice(lastIndex,1);   
 		}
-		console.log("After the change eventTempStatus." + roomID + " looks like this: " + eventsTempStatus[roomID])
 	  //broadcast the change to other sockets within room
 	  socket.to(roomID).emit('table-changed',{ description: tableChange})
 	 	 
@@ -146,22 +151,18 @@ io.on('connection', function(socket) {
 	 socket.on('change-event-time',function(data){
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
-		 const roomID=  Object.keys(socket.rooms)[0]
-		 console.log("Old room id is :"+roomID)
-		 
+		 let roomID=  Object.keys(socket.rooms)[0]
+		 roomID =parseInt(roomID)
 		 //exit the room
 		 socket.leave(roomID);
-		
+		 
 		 //retrieve the current selected table from data 
 		 const selectedTable =  data.selectedTable
-		 console.log("selected table is :" +selectedTable)
+		
 		 //if not null - delete it from hash map, and broadcast to ex-room
-
-    
 
 		 //checks if roomID is exists
 		 if(!eventsTempStatus[roomID]){
-		    console.log("init event temp status for room " +roomID )
 				 eventsTempStatus[roomID] = []
 		 }
 		 else
@@ -187,7 +188,10 @@ io.on('connection', function(socket) {
 		
 
 		 //retrieve the new event ID from data
-		 const eventID = data.eventID		
+		 let eventID = data.eventID	
+		 eventID = parseInt(eventID)
+		 //update CMS counter
+		 sketch.update(eventID, 1)
 		 //join the user to the room
 		 socket.join(eventID)
 		 
@@ -197,7 +201,7 @@ io.on('connection', function(socket) {
 		 };
 
 
-		 console.log("EventTempStatus of new room is EventTempStatus." + eventID + " looks like this: " + eventsTempStatus[eventID])
+		
 		 	//send to user tables status from hash map (before his are updated)
 			 socket.emit("all-temp-status", { description: eventsTempStatus[eventID] } )
 			 
@@ -217,6 +221,9 @@ io.on('connection', function(socket) {
 
 		  //send the user tables from DB
 			socket.emit("all-tables",{ description: tablesJSON })
+
+			//return event popularity to user
+			socket.emit("event-popularity",{ description: getCMSpopularity(eventID) })
 	
 		
 
@@ -231,6 +238,9 @@ io.on('connection', function(socket) {
 		console.log(tablesJSON)
 		//broadcast everyone
 		io.sockets.emit("all-tables-broadcast",{ description: tablesJSON })
+
+		//update CMS counter
+		sketch.update(eventID, 1)
 	})
  });
  
@@ -243,3 +253,43 @@ io.on('connection', function(socket) {
  * Listen on provided port, on all network interfaces.
  */
 http.listen(port, () => console.log(`API running on localhost:${port}`));
+
+
+function getCMSvalue(key) {
+	return sketch.query(key)
+}
+
+var mockEvents = [1,2,3,4,5,6,7]
+function getCMSpopularity(key){
+	let popularity 
+	//get all events
+	
+	//map eventID to frequency
+	const frequencyValues =  mockEvents.map(x=>  getCMSvalue(x))
+   
+	//filtering - retrive all events that has values
+	const filterdEvents =  frequencyValues.filter(x=> x !=0 )
+	if (typeof filterdEvents !== 'undefined' && filterdEvents.length > 0) {
+	//calculate sum of all filter events
+	const sum = filterdEvents.reduce((x,y) => x+y)
+	
+	//make avg 
+	const avg = sum/filterdEvents.length
+
+	//make proportaion between avg and value of key
+	const frequencyOfChosen = sketch.query(key)
+	
+	popularity = frequencyOfChosen/avg
+  
+	//popularity cannot be greater than one
+	if(popularity>1){
+		popularity = 1
+	}
+	}
+	else
+		popularity = 1
+	return popularity;
+	
+
+}
+

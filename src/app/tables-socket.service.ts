@@ -59,6 +59,11 @@ userChangedRoom(){
   .fromEvent<any>("clean-selected-by-other")
   .pipe(map(data => data));
 }
+eventPopularity(){
+  return this.socket
+  .fromEvent<any>("event-popularity")
+  .pipe(map(data => data.description))
+}
 
 
 

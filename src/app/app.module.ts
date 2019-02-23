@@ -19,7 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor, ErrorInterceptor } from 'src/app/helpers';
 import { Role } from 'src/app/models';
-
+import {ProgressBarModule} from "angular-progress-bar"
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 // used to create fake backend
@@ -77,7 +77,8 @@ const appRoutes: Routes = [
     MatIconModule,
     MatListModule,
     FormsModule,
-    SocketIoModule.forRoot(config) 
+    SocketIoModule.forRoot(config),
+    ProgressBarModule 
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
