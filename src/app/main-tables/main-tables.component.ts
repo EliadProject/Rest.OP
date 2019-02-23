@@ -53,7 +53,7 @@ export class MainTablesComponent implements OnInit {
   //  this.getTables();
 
      //default eventPopulairty 
-     this.eventPopularity = 100
+     this.eventPopularity = 1
 
 
      //get changes from users trying to choose table
@@ -96,7 +96,7 @@ export class MainTablesComponent implements OnInit {
 
 
     this.sockets.eventPopularity().
-    subscribe(eventPopularity => this.eventPopularity = eventPopularity * 100)
+    subscribe(eventPopularity => this.eventPopularity = eventPopularity )
     
     //clean selected by other list when change event(room)
     /*

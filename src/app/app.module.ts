@@ -21,7 +21,7 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/helpers';
 import { Role } from 'src/app/models';
 import {ProgressBarModule} from "angular-progress-bar"
 import { BarChartComponent } from './bar-chart/bar-chart.component';
-
+import {toPercentPipe } from './PipeToPercentage'
 // used to create fake backend
 import { fakeBackendProvider } from 'src/app/helpers';
 
@@ -60,7 +60,9 @@ const appRoutes: Routes = [
     MainTablesComponent,
     FooterComponent,
     LoginComponent,
-    AdminComponent
+    AdminComponent,
+    toPercentPipe
+
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

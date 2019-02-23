@@ -242,6 +242,7 @@ db.once('open', function(callback) {
 		roomID =parseInt(roomID)
 		 
 		//find the table that approved
+		
 		//query the db for approve
 		
 		//broadcast everyone within the room
