@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\backend",
+    "\\backend\\models",
+    "\\backend\\routes",
+    "\\src\\app\\models"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\backend\\event.js",
   "PreviewInSolutionExplorer": false
 }
