@@ -9,7 +9,10 @@ const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const cors = require('cors');
 const errorHandler = require('src/app/helpers/error-handler');
-var createCountMinSketch = require("count-min-sketch") 
+const createCountMinSketch = require('count-min-sketch') 
+const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
+
+
 //const socket_tables = require('./backend/tables-socket');
 
 var event = require('./backend/routes/event');
@@ -54,13 +57,7 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
-//mongodb://localhost/testRest
-mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true', function (err) {
-    if (err) throw err;
-     
-    console.log('Successfully connected - MongoDB');
-	 
-});
+
 
 //get event functions
 var EventApp = require('./backend/event');
@@ -97,13 +94,18 @@ var nextEventID = 1
 //Create data structure
 var sketch = createCountMinSketch()
 
-//Whenever someone connects this gets executed
-io.on('connection', function(socket) {
+mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(callback) {
+	console.log('Successfully connected - MongoDB');
+   
+    //Whenever someone connects this gets executed
+	io.on('connection', function(socket) {
 	
 
 	//amir - I need here the closest event to the current date 
 	
-
 	//if room is state list is not exist, create one
 	if(!eventsTempStatus[nextEventID])
 		eventsTempStatus[nextEventID]= []
@@ -249,6 +251,10 @@ io.on('connection', function(socket) {
 		sketch.update(eventID, 1)
 	})
  });
+               
+})
+
+
  
 
 
