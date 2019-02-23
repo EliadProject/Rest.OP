@@ -119,13 +119,10 @@ io.on('connection', function(socket) {
 	socket.on('table-select', function(tableChange) {
 		//extract room ID
 		let roomID=  Object.keys(socket.rooms)[0]
-
+		roomID = parseInt(roomID)
+		
 		//update CMS counter of the event of the selection 
-		
-		
 		sketch.update(roomID, 1)
-    console.log("room is" + roomID + " " +getCMSvalue(roomID))
-	
   
 		//checks if roomID is exists
 		if(!eventsTempStatus[roomID])
@@ -150,8 +147,8 @@ io.on('connection', function(socket) {
 	 socket.on('change-event-time',function(data){
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
-		 const roomID=  Object.keys(socket.rooms)[0]
-		 
+		 let roomID=  Object.keys(socket.rooms)[0]
+		 roomID =parseInt(roomID)
 		 //exit the room
 		 socket.leave(roomID);
 		 
@@ -187,10 +184,10 @@ io.on('connection', function(socket) {
 		
 
 		 //retrieve the new event ID from data
-		 const eventID = data.eventID	
-		 
+		 let eventID = data.eventID	
+		 eventID = parseInt(eventID)
 		 //update CMS counter
-		 sketch.update([eventID], 1)
+		 sketch.update(eventID, 1)
 		 //join the user to the room
 		 socket.join(eventID)
 		 
@@ -258,39 +255,37 @@ function getCMSvalue(key) {
 	return sketch.query(key)
 }
 
-var mockEvents = [1,2,3,4,5,6]
+var mockEvents = [1,2,3,4,5,6,7]
 function getCMSpopularity(key){
+	let popularity 
 	//get all events
 	
-	
-	console.log("CMS Popularity room " + key)
 	//map eventID to frequency
-	mockEvents.forEach(x=>console.log(getCMSvalue(x)))
 	const frequencyValues =  mockEvents.map(x=>  getCMSvalue(x))
-	frequencyValues.forEach(x=> console.log("frequency: " + x))
-
+   
 	//filtering - retrive all events that has values
 	const filterdEvents =  frequencyValues.filter(x=> x !=0 )
-	filterdEvents.forEach(x=> console.log("filte event: " + x))
-
+	if (typeof filterdEvents !== 'undefined' && filterdEvents.length > 0) {
 	//calculate sum of all filter events
 	const sum = filterdEvents.reduce((x,y) => x+y)
-	console.log("sum of all filters is: " +sum)
+	
 	//make avg 
 	const avg = sum/filterdEvents.length
-	console.log("avg is: " + avg)
+
 	//make proportaion between avg and value of key
 	const frequencyOfChosen = sketch.query(key)
-	console.log("frequence of chosen event is: "+frequencyOfChosen)
-	let popularity = frequencyOfChosen/avg
+	
+	popularity = frequencyOfChosen/avg
   
 	//popularity cannot be greater than one
-	if(popularity>1)
+	if(popularity>1){
 		popularity = 1
-
+	}
+	}
+	else
+		popularity = 1
 	return popularity;
 	
-	
-	
+
 }
 

@@ -1,6 +1,11 @@
   
 <section class="container-fluied">
-   <div> {{ eventPopularity}} </div>
+    
+  <div class="row">
+    <div class="col-2"><h4 > Event Popularity </h4></div>
+    <div class="col-3"><progress-bar  [progress]="eventPopularity" [color-degraded]="{'0': '#00cbcb',  '15': '#f9c3d3', '25': '#fd8c8e','50':'#ccff66', '70':'#00ff99' ,'90':'#00fe00' }"></progress-bar> </div>
+  </div>
+    
    <div *ngFor="let table of tablesLogic.tables" (click)="onSelect(table)" >
         <ul class="circle-container" [class.selected]="table.id === tablesLogic.selectedTable" [class.selectedOther]="checkIfContains(table.id)" [class.taken]="isTaken(table)" >
             <li *ngFor="let chair of [].constructor(chairsNum)">
