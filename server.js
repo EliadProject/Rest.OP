@@ -9,7 +9,10 @@ const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const cors = require('cors');
 const errorHandler = require('src/app/helpers/error-handler');
-var createCountMinSketch = require("count-min-sketch") 
+const createCountMinSketch = require('count-min-sketch') 
+const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
+
+
 //const socket_tables = require('./backend/tables-socket');
 
 var event = require('./backend/routes/event');
@@ -54,13 +57,7 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
-//mongodb://localhost/testRest
-mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true', function (err) {
-    if (err) throw err;
-     
-    console.log('Successfully connected - MongoDB');
-	 
-});
+
 
 //get functions
 var functions = require('./backend/functions/event');
@@ -72,8 +69,14 @@ var nextEventID = 1
 //Create data structure
 var sketch = createCountMinSketch()
 
-//Whenever someone connects this gets executed
-io.on('connection', function(socket) {
+mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(callback) {
+	console.log('Successfully connected - MongoDB');
+   
+    //Whenever someone connects this gets executed
+	io.on('connection', function(socket) {
 	
 	//get the closest event to the current date 
   functions.getNextEventID(function (response) {
@@ -83,6 +86,7 @@ io.on('connection', function(socket) {
 	  if(!eventsTempStatus[nextEventID])
 		  eventsTempStatus[nextEventID]= []
 		
+
 	  //join user to room by next event
 	  console.log("Hello new user, you are at room: " + nextEventID)
     socket.join(nextEventID)
@@ -97,6 +101,7 @@ io.on('connection', function(socket) {
     socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] })
 
   });
+
 
 
 	//on select, update hash table of 
@@ -214,17 +219,24 @@ io.on('connection', function(socket) {
 	socket.on('disconnect', function () {
 	   console.log('A user disconnected');
 	})
-	socket.on('table-approve', function(tableApproved){
-		tablesJSON[tableApproved-1].status=2
-		console.log(tablesJSON)
-		//broadcast everyone
-		io.sockets.emit("all-tables-broadcast",{ description: tablesJSON })
+	socket.on('table-approve', function(tableApprovedID){
+		//retrive roomID of user
+		let roomID=  Object.keys(socket.rooms)[0]
+		roomID =parseInt(roomID)
+		 
+		//find the table that approved
+		//query the db for approve
+		
+		//broadcast everyone within the room
+		socket.to(roomID).emit("all-tables-broadcast",{ description: tablesJSON })
 
 		//update CMS counter
 		sketch.update(eventID, 1)
 	})
  });
- 
+               
+})
+
 
 /**
  * Listen on provided port, on all network interfaces.
