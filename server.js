@@ -12,7 +12,7 @@ const errorHandler = require('src/app/helpers/error-handler');
 var createCountMinSketch = require("count-min-sketch") 
 //const socket_tables = require('./backend/tables-socket');
 
-var tables = require('./db/tables');
+var event = require('./backend/routes/event');
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -29,12 +29,16 @@ app.use(errorHandler);
 app.use(express.static(path.join(__dirname, 'dist/my-app')));
 
 // Set our api routes
-app.use('/api', tables);
+app.use('/event', event);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   //res.sendfile("client-test.html")
   res.sendFile(path.join(__dirname, 'dist/my-app/index.html'));
+});
+
+app.post('*', (req, res) => {
+  res.send('post works');
 });
 
 /**
@@ -50,29 +54,29 @@ app.set('port', port);
 
 io.set('origins', '*:*');
 
- 
-/*
-mongoose.connect('mongodb://localhost/testRest', function (err) {
+//mongodb://localhost/testRest
+mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true', function (err) {
     if (err) throw err;
      
-    console.log('Successfully connected');
-	 
-
-tablesJSON = [];
-
-    tables.find({
-		
-    }).exec(function(err, res) {
-		if (err) throw err;
-			
-		tablesJSON = res;
-        //console.log(res);
-    });
+    console.log('Successfully connected - MongoDB');
 	 
 });
-*/
 
+//get event functions
+var EventApp = require('./backend/event');
 
+//Generate Tables
+//build tablesJSON as format : [{"id":id,"status":status},...}]
+var tablesJSON = [];
+EventApp.tables()
+  .then(res => tablesJSON = res)
+  .catch(err => {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+/*
 //Dummy Tables
 tablesJSON = [{
 	"id":1,
@@ -83,7 +87,7 @@ tablesJSON = [{
 	"status":1  },{"id":5,
 	"status":1  },{"id":6,
 	"status":1  }]
-
+ */
 
 //Generate Tables
 //let tables = JSON.parse(tablesJSON);
