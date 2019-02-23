@@ -103,6 +103,7 @@ io.on('connection', function(socket) {
 
 	//amir - I need here the closest event to the current date 
 	
+
 	//if room is state list is not exist, create one
 	if(!eventsTempStatus[nextEventID])
 		eventsTempStatus[nextEventID]= []
@@ -112,7 +113,7 @@ io.on('connection', function(socket) {
 	socket.join(nextEventID)
 	
   //amir - i need here query of all tables within eventID 
-
+  
 	//user joined, send all tables status by event id 
 	socket.emit("all-tables",{ description: tablesJSON })
 	
