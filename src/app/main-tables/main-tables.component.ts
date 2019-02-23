@@ -91,11 +91,7 @@ export class MainTablesComponent implements OnInit {
     this.sockets.
     allTablesTemp().
     subscribe(selectedByOther => {
-      
-     
       this.tablesLogic.selectedByOther = selectedByOther
-   
-     
     })
 
 

@@ -233,19 +233,22 @@ io.on('connection', function(socket) {
 	socket.on('disconnect', function () {
 	   console.log('A user disconnected');
 	})
-	socket.on('table-approve', function(tableApproved){
-		tablesJSON[tableApproved-1].status=2
-		console.log(tablesJSON)
-		//broadcast everyone
-		io.sockets.emit("all-tables-broadcast",{ description: tablesJSON })
+	socket.on('table-approve', function(tableApprovedID){
+		//retrive roomID of user
+		let roomID=  Object.keys(socket.rooms)[0]
+		roomID =parseInt(roomID)
+		 
+		//find the table that approved
+		//query the db for approve
+		
+		//broadcast everyone within the room
+		socket.to(roomID).emit("all-tables-broadcast",{ description: tablesJSON })
 
 		//update CMS counter
 		sketch.update(eventID, 1)
 	})
  });
  
-
-
 
 
 
