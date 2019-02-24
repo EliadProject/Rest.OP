@@ -5,9 +5,9 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
    // functions.addUser("kaki")
-     functions.getAllUsers(function(response){
-            let users = response 
-            console.log(users)
+     functions.groupByRole(function(response){
+            let statistics = response 
+            console.log(statistics)
             })
                
 })
