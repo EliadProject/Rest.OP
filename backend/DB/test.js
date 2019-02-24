@@ -4,10 +4,10 @@ mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/t
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
-   // functions.addUser("kaki")
-     functions.getAllUsers(function(response){
-            let users = response 
-            console.log(users)
+     //functions.addUser("admin1","admin1" )
+     functions.canAuth("admin1","admin1",function(response){
+            let res = response 
+            console.log(res)
             })
                
 })

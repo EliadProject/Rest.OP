@@ -1,12 +1,12 @@
 var User = require('../Schemas/Users_Shema');
 module.exports = {
    
-    addUser: function(username) {
-        let user = new User({username: 'user1'})
+    addUser: function(username,password,firstname,lastname) {
+        let user = new User({username: username, password:password, firstname:firstname, lastname:lastname})
         user.save()
     },
     getUserByID: function(id,callback){
-         User.findOne({id:id},function(err,res){
+         User.findOne({_id:id},function(err,res){
             if (err) return console.error(err)
             else {    
                 return callback(res)
@@ -29,7 +29,16 @@ module.exports = {
                 return callback(res)
             }
         })
+    },
+    deleteUser: function(id,callback){
+        User.deleteOne({_id: id },function(err,res){
+            if (err) return console.error(err)
+            else {    
+                return callback(res)
+            }
+        })
     }
+    
    
     
     

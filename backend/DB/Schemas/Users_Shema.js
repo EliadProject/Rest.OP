@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
   // we're connected!
 var usersShema = new mongoose.Schema({
-    id: Number,
     username: String,
     password: String,
     firstName: String,
