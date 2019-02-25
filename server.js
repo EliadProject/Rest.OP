@@ -110,7 +110,7 @@ db.once('open', function(callback) {
 	socket.on('table-select', function(tableChange) {
 		//extract room ID
 		let roomID=  Object.keys(socket.rooms)[0]
-		roomID = parseInt(roomID)
+		
 		
 		//update CMS counter of the event of the selection 
 		sketch.update(roomID, 1)
@@ -138,7 +138,7 @@ db.once('open', function(callback) {
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
 		 let roomID=  Object.keys(socket.rooms)[0]
-		 roomID =parseInt(roomID)
+		 
 		 //exit the room
 		 socket.leave(roomID);
 		 
@@ -175,7 +175,7 @@ db.once('open', function(callback) {
 
 		 //retrieve the new event ID from data
 		 let eventID = data.eventID	
-		 eventID = parseInt(eventID)
+		 
 		 //update CMS counter
 		 sketch.update(eventID, 1)
 		 //join the user to the room

@@ -5,7 +5,7 @@ module.exports = {
 
   getTables: function (id, callback) {
     var tablesJSON = [];
-    Event.findOne({ "id": id }, function (err, res) {
+    Event.findOne({ "_id": id }, function (err, res) {
       if (err) return console.error(err)
       else if(res) {
         var len = res.tables.length
