@@ -24,7 +24,7 @@ module.exports = {
     Event.findOne({ "startTime": { $gte: new Date() } }, function (err, res) {
       if (err) return console.error(err)
       else {
-        return callback(res.id)
+        return callback(res._id)
       }
 
     })

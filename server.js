@@ -89,7 +89,11 @@ db.once('open', function(callback) {
 		
 
 	  //join user to room by next event
-	  console.log("Hello new user, you are at room: " + nextEventID)
+		console.log("Hello new user, you are at room: " + nextEventID)
+		
+		//leaving default room
+
+
     socket.join(nextEventID)
 
 
@@ -108,9 +112,10 @@ db.once('open', function(callback) {
 
 	//on select, update hash table of 
 	socket.on('table-select', function(tableChange) {
-		//extract room ID
-		let roomID=  Object.keys(socket.rooms)[0]
 		
+		//extract room ID  
+		let roomID=  Object.keys(socket.rooms)[1]
+		console.log("room id is " + roomID)
 		
 		//update CMS counter of the event of the selection 
 		sketch.update(roomID, 1)
@@ -137,7 +142,7 @@ db.once('open', function(callback) {
 	socket.on('change-event-time',function(data){
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
-		 let roomID=  Object.keys(socket.rooms)[0]
+		 let roomID=  Object.keys(socket.rooms)[1]
 		 
 		 //exit the room
 		 socket.leave(roomID);
@@ -223,7 +228,7 @@ db.once('open', function(callback) {
 	})
 	socket.on('table-approve', function(tableApprovedID){
 		//retrive roomID of user
-		let roomID=  Object.keys(socket.rooms)[0]
+		let roomID=  Object.keys(socket.rooms)[1]
 		roomID =parseInt(roomID)
 		 
 		//find the table that approved
