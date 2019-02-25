@@ -13,6 +13,7 @@ const createCountMinSketch = require('count-min-sketch')
 const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
 
 
+
 //const socket_tables = require('./backend/tables-socket');
 
 var event = require('./backend/routes/event');
@@ -60,12 +61,11 @@ io.set('origins', '*:*');
 
 
 //get functions
-var functions = require('./backend/functions/event');
+var event_Functions = require('./backend/DB/Functions/Events_Functions');
 var tablesJSON = [];
 
 
 var eventsTempStatus = {}
-var nextEventID = 1
 //Create data structure
 var sketch = createCountMinSketch()
 
@@ -79,8 +79,9 @@ db.once('open', function(callback) {
 	io.on('connection', function(socket) {
 	
 	//get the closest event to the current date 
-  functions.getNextEventID(function (response) {
-    nextEventID = response;
+  event_Functions.getNextEventID(function (response) {
+		let nextEventID = response;
+		console.log("Got next event "+nextEventID)
 
 	  //if room is state list is not exist, create one
 	  if(!eventsTempStatus[nextEventID])
@@ -92,15 +93,16 @@ db.once('open', function(callback) {
     socket.join(nextEventID)
 
 
-    functions.getTables(nextEventID, function (response) {
+    event_Functions.getTables(nextEventID, function (response) {
       //user joined, send all tables status by event id
       socket.emit("all-tables", { description: response })
     })
 
+	
     //send all temporary data of next event
     socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] })
-
-  });
+	});
+  
 
 
 
@@ -204,7 +206,7 @@ db.once('open', function(callback) {
 		  socket.emit("clean-selected-by-other",true)
 
 		  //send the user tables from DB
-      functions.getTables(eventID, function (response) {
+      event_Functions.getTables(eventID, function (response) {
         socket.emit("all-tables", { description: response })
       });
 

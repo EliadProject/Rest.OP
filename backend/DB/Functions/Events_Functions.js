@@ -1,4 +1,4 @@
-var Event = require('../models/event.js');
+var Event = require('../Schemas/Events_Schema');
 
 
 module.exports = {
