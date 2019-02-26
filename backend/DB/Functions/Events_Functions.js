@@ -1,6 +1,5 @@
 var Event = require('../Schemas/Events_Schema');
 var Menu = require('../Schemas/Menus_Shema')
-
 module.exports = {
 
   getTables: function (id, callback) {
@@ -52,7 +51,15 @@ module.exports = {
       event.save()
     })
 
+  },
+  approveTable : function(userID,eventID,tableID,callback){
+    Event.update({ "_id": eventID, tables:  {"_id" : tableID, } },function(res) {
+      //{ "$set": { "tables._id.userID": userID } }
+     
+
+   })
   }
+
 
 };
 

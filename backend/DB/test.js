@@ -7,5 +7,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
      
     eventsFunctions.createEvent("Morning",4)
+
+    eventsFunctions.approveTable("5c71867ea04a078d7b3d3fa8","5c706379b99a2356704cbef1","5c706379b99a2356704cbef2")
                
 })

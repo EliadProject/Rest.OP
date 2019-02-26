@@ -208,7 +208,7 @@ db.once('open', function(callback) {
 			};
 		
 		  //clean users selectedByOther 
-		  socket.emit("clean-selected-by-other",true)
+		  socket.emit("clean-selected-by- other",true)
 
 		  //send the user tables from DB
       event_Functions.getTables(eventID, function (response) {
