@@ -1,5 +1,5 @@
 var Event = require('../Schemas/Events_Schema');
-
+var Menu = require('../Schemas/Menus_Shema')
 
 module.exports = {
 
@@ -29,6 +29,30 @@ module.exports = {
 
     })
   },
+  createEvent:function(menuType,tablesNum,startTime,endTime){
+    //get MenuID
+    Menu.findOne({ "type" : menuType }, function (err, res) {
+      let menuID
+      if (err)
+        return console.error(err)
+      else{
+        if(res)
+          menuID = res._id 
+        else
+          menuID = undefined
+      }
+    
+      //pares table number to array
+      let tables = []
+      for (i=0;i<tablesNum;i++){
+        tables.push({})
+      }
+
+      let event = new Event({startTime: startTime, endTime:endTime,menuID: menuID, tables: tables})
+      event.save()
+    })
+
+  }
 
 };
 

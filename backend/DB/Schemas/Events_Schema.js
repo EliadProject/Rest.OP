@@ -13,9 +13,20 @@ var eventsSchema = mongoose.Schema({
     },
     tables: [
         {
-            userId: Number
+            userId: {
+                
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Users'
+                
+            }
         }
-    ]
+    ],
+    menuID: {
+                
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Menus'
+    
+}
 });
  
 var Events = mongoose.model('events', eventsSchema);
