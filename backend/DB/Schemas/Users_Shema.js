@@ -8,7 +8,7 @@ var usersShema = new mongoose.Schema({
     role: String
 });
   
-var User = mongoose.model('User', usersShema);
+var User = mongoose.model('Users', usersShema);
 
 module.exports = User;
 

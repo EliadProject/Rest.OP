@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
  
 var eventsSchema = mongoose.Schema({
     //_id: mongoose.Schema.Types.ObjectId,
-    id:Number,
     startTime: { 
         type: Date,
         default: Date.now
@@ -14,9 +13,20 @@ var eventsSchema = mongoose.Schema({
     },
     tables: [
         {
-            userId: Number
+            userId: {
+                
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Users'
+                
+            }
         }
-    ]
+    ],
+    menuID: {
+                
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Menus'
+    
+}
 });
  
 var Events = mongoose.model('events', eventsSchema);
