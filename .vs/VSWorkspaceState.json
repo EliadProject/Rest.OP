@@ -3,14 +3,15 @@
     "",
     "\\backend",
     "\\backend\\functions",
-    "\\backend\\models",
-    "\\backend\\routes",
+    "\\e2e",
     "\\src",
     "\\src\\app",
     "\\src\\app\\helpers",
-    "\\src\\app\\login",
-    "\\src\\app\\main-tables"
+    "\\src\\app\\main-tables",
+    "\\src\\app\\services",
+    "\\src\\app\\side-navbar",
+    "\\src\\app\\users"
   ],
-  "SelectedNode": "\\e2e",
+  "SelectedNode": "\\src\\app\\event.ts",
   "PreviewInSolutionExplorer": false
 }

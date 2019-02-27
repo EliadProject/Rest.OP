@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from 'node_modules/@angular/router';
 
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',

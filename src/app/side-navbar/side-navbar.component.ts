@@ -31,24 +31,28 @@ export class SideNavbarComponent implements OnInit {
   constructor(private tablesLogic: TablesLogicService, private tableSockets: TableSocket, private api: ApiService) { }
 
   ngOnInit() {
-   this.events = EventsMock
-   this.eventTime = this.events[0].eventTime
-   this.eventSelectedID = this.events[0].id
-   this.eventSelected = this.events[0]
-    
-    this.api.getNextEvents()
+
+    //this.api.getNextEvents()
     
 
     this.api.getNextEvents();
     this.eventsSub = this.api
-      .getEventUpdateListener()
-      .subscribe((eventData: { id: number, tables: Table[] }) => {
+      .getEventTimeUpdateListener()
+      //.subscribe((eventData: { id: number, tables: Table[] }) => {
+      .subscribe((eventData) => {
         //this.totalNotes = noteData.noteCount;
         //this.notes = noteData.notes;
-        this.tbls = eventData.tables;
-        this.tblsid = eventData.id;
+        //this.tbls = eventData.tables;
+        //this.tblsid = eventData.id;
         this.bla = eventData;
+        this.events = eventData;
       });
+
+    //this.events = EventsMock
+    //this.eventTime = this.events[0].eventTime
+    //this.eventSelectedID = this.events[0].id
+    //this.eventSelected = this.events[0]
+
 
    
   }
@@ -74,7 +78,8 @@ export class SideNavbarComponent implements OnInit {
     
     //create json to deliver to socket
     let onChangeEvent : ChangeEventJSON = { eventID: this.eventSelected.id , selectedTable: this.tablesLogic.selectedTable};
-  
+
+
     //emit socket with json
     this.tableSockets.changeEventTime(onChangeEvent)
     
