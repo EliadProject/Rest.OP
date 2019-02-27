@@ -2,16 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\backend",
-    "\\backend\\functions",
-    "\\e2e",
-    "\\src",
-    "\\src\\app",
-    "\\src\\app\\helpers",
-    "\\src\\app\\main-tables",
-    "\\src\\app\\services",
-    "\\src\\app\\side-navbar",
-    "\\src\\app\\users"
+    "\\src\\app\\services"
   ],
-  "SelectedNode": "\\src\\app\\event.ts",
   "PreviewInSolutionExplorer": false
 }
