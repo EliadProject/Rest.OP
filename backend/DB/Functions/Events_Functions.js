@@ -52,12 +52,20 @@ module.exports = {
     })
 
   },
-  approveTable : function(userID,eventID,tableID,callback){
-    Event.update({ "_id": eventID, tables:  {"_id" : tableID, } },function(res) {
-      //{ "$set": { "tables._id.userID": userID } }
+  approveTable : function(eventID,tableID,userID){
+    
+
+      Event.update({_id: eventID,
+  'tables._id' : tableID},  
+    {$set: {'tables.$.userId' : userID} }, function (err, res){
+      if (err)  console.error(err)
+      else {
+        console.log (res)
+      }
+    })
      
 
-   })
+   
   }
 
 

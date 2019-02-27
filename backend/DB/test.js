@@ -8,6 +8,6 @@ db.once('open', function(callback) {
      
     eventsFunctions.createEvent("Morning",4)
 
-    eventsFunctions.approveTable("5c71867ea04a078d7b3d3fa8","5c706379b99a2356704cbef1","5c706379b99a2356704cbef2")
+    eventsFunctions.approveTable("5c7065dd07b3f145bc9ba056","5c7065dd07b3f145bc9ba05e","5c71867ea04a078d7b3d3fa8")
                
 })
