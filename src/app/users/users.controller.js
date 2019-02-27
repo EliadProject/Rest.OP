@@ -24,7 +24,8 @@ function getAll(req, res, next) {
 
 function getById(req, res, next) {
     const currentUser = req.user;
-    console.log(currentUser)
+    console.log(currentUser);
+    // console.log(currentUser)
     const id = parseInt(req.params.id);
 
     // only allow admins to access other user records

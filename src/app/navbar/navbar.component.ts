@@ -42,8 +42,8 @@ export class NavbarComponent implements OnInit {
       $('#dayStatus').append(themessage);
   }
 
-  get isAdmin() {
-    return this.currentUser && this.currentUser.role === Role.Admin;
+ get isAdmin() {
+    return this.currentUser && this.currentUser["_doc"]["role"] === Role.Admin;
   }
 
   logout() {

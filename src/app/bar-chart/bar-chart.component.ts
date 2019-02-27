@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
@@ -26,13 +28,17 @@ export class BarChartComponent implements OnInit {
     private svg: any;
     private g: any;
 
-    constructor() {}
+    constructor(private http: HttpClient) {}
 
     ngOnInit() {
         this.initSvg();
         this.initAxis();
         this.drawAxis();
         this.drawBars();
+    }
+
+    public login() {
+        return this.http.get(`http://localhost:3000/users/authenticate`);
     }
 
     private initSvg() {

@@ -1,8 +1,7 @@
 ﻿const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const Role = require('src/app/helpers/role');
-var User = require('backend/DB/Schemas/Users_Shema');
-
+var userFunctions = require('backend/DB/Functions/Users_Functions')
 // users hardcoded for simplicity, store in a db for production applications
 users = [
     /*
@@ -11,13 +10,10 @@ users = [
     */
 ];
 
-User.find({},function(err,res){
-    if (err) return console.error(err)
-    else {    
-        users = res;
-        console.log(users)
-    }
-});
+userFunctions.getAllUsers(function (res){
+    users = res;
+    // console.log(users)
+})
 
 module.exports = {
     authenticate,
