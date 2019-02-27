@@ -226,16 +226,23 @@ db.once('open', function(callback) {
 	socket.on('disconnect', function () {
 	   console.log('A user disconnected');
 	})
-	socket.on('table-approve', function(tableApprovedID){
+	socket.on('table-approve', function(reservationData){
 		//retrive roomID of user
 		let roomID=  Object.keys(socket.rooms)[1]
-		roomID =parseInt(roomID)
-		 
-		//find the table that approved
-		//query the db for approve
 		
-		//broadcast everyone within the room
-		socket.to(roomID).emit("all-tables-broadcast",{ description: tablesJSON })
+		//retrieve parameters from reservation data
+		let eventID = reservationData.eventID
+
+		let tableID = reservationData.tableID
+
+		let userID = reservationData.userID
+		
+		//query the db for approve
+		event_Functions.approveTable(eventID,tableID,userID,function(res){
+			event_Functions.getTables(eventID,function(tables){
+				io.in(roomID).emit("all-tables-broadcast",{ description: tables })
+			})
+		})
 
 		//update CMS counter
 		sketch.update(eventID, 1)

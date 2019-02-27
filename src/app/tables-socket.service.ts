@@ -22,7 +22,7 @@ export class TableSocket {
      
   }
   //user approved selection of table
-  tableApproved(tableApproved: number){
+  tableApproved(tableApproved){
     this.socket.emit("table-approve", tableApproved);
    
 }
