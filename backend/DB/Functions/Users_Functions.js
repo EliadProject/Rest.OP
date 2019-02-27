@@ -37,9 +37,15 @@ module.exports = {
                 return callback(res)
             }
         })
+    },    
+    groupByRole: function(callback){
+        User.aggregate([{$group : { _id:'$role', count : {$sum : 1 } }}],function(err,res){
+            if (err) return console.error(err)
+            else {    
+                return callback(res)
+            }
+        })
     }
-    
-   
     
     
 };
