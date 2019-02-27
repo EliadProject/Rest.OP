@@ -21,40 +21,21 @@ export class SideNavbarComponent implements OnInit {
   eventSelected: Event
   eventSelectedID: number
   events: Event[] = [];
-  tbls: Table[] = [];
-  tblsid: number
   name: string = ""
   eventTime: number = Date.now()
   attendies: number
-  bla: any;
-
+ 
   constructor(private tablesLogic: TablesLogicService, private tableSockets: TableSocket, private api: ApiService) { }
 
   ngOnInit() {
 
-    //this.api.getNextEvents()
-    
-
     this.api.getNextEvents();
     this.eventsSub = this.api
       .getEventTimeUpdateListener()
-      //.subscribe((eventData: { id: number, tables: Table[] }) => {
       .subscribe((eventData) => {
-        //this.totalNotes = noteData.noteCount;
-        //this.notes = noteData.notes;
-        //this.tbls = eventData.tables;
-        //this.tblsid = eventData.id;
-        this.bla = eventData;
-        this.events = eventData;
+        this.events = eventData; //this.events = EventsMock
       });
-
-    //this.events = EventsMock
-    //this.eventTime = this.events[0].eventTime
-    //this.eventSelectedID = this.events[0].id
-    //this.eventSelected = this.events[0]
-
-
-   
+ 
   }
 
 

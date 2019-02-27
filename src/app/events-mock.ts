@@ -9,5 +9,3 @@ export const EventsMock: Event[] = [
     { id: 6, eventTime: 20 },
     { id: 7, eventTime: 22 }
   ];
-
-EventsMock.push({ id: 4, eventTime: 3 });
