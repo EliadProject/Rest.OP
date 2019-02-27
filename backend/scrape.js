@@ -3,6 +3,20 @@ const cheerio = require('../node_modules/cheerio');
 var scrape_Functions = require('../backend/DB/Functions/Scrape_Functions');
 var mongoose = require('mongoose');
 
+/*
+const AhoCorasick = require('../node_modules/aho-corasick-node');
+
+const keywords = ['b', 'ba', 'nan', 'ab'];
+const builder = AhoCorasick.builder();
+keywords.forEach(k => builder.add(k));
+const ac = builder.build();
+
+const text = 'banana'; ///from the user
+const hits = ac.match(text); // ['b', 'ba', 'nan']
+
+console.log(hits);
+*/
+
 mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -10,7 +24,7 @@ db.once('open', function (callback) {
   console.log('Successfully connected - MongoDB');
 
 
-  getResturant();
+ // getResturant();
 
 
 });
@@ -30,16 +44,17 @@ function getResturantMenu(url) {
 
         if (price)
           menu.push({ food, price });
-
       });
 
-      scrape_Functions.createScrape('freshii', menu);
+      var name = url.split("/")[3].split("-prices");
+      scrape_Functions.createScrape(name[0], menu);
     }
 
   });
 }
 
 function getResturant() {
+  const numRest = 3;
   request('https://www.fastfoodmenuprices.com/all-restaurants/', (error,
     response, html) => {
     if (!error && response.statusCode == 200) {
@@ -49,11 +64,8 @@ function getResturant() {
       links.each(function (i, link) {
         anchors[i] = $(link).attr("href");
         getResturantMenu(anchors[i]);
-        if (i == 3) return false;
+        if (i == numRest) return false;
       });
-
-
-
     }
 
   });

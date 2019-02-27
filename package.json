@@ -24,6 +24,7 @@
     "@material/drawer": "^0.40.0",
     "@material/list": "^0.40.0",
     "@ng-select/ng-select": "^2.15.3",
+    "aho-corasick-node": "^1.0.2",
     "angular-progress-bar": "^1.0.9",
     "bootstrap": "^4.2.1",
     "cheerio": "^1.0.0-rc.2",
