@@ -41,7 +41,9 @@ export class SideNavbarComponent implements OnInit {
       .getEventTimeUpdateListener()
       .subscribe((eventData) => {
         this.events = eventData; //this.events = EventsMock
+        this.eventSelected = eventData[0];
       });
+
  
   }
 

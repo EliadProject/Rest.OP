@@ -25,7 +25,7 @@ export class ApiService {
         let eventsData = []
         eventData.forEach(x => {
           let moment = require('moment'); //momentjs
-          let eventTime = moment.utc(x.startTime).format("DD-MM-YYYY HH:mm") + '-' + moment.utc(x.endTime).format("HH:mm");
+          let eventTime = moment.utc(x.startTime).format("DD/MM/YYYY HH:mm") + '-' + moment.utc(x.endTime).format("HH:mm");
           let event = { id: x._id, eventTime: eventTime }
           eventsData.push(event);
         })
