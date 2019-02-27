@@ -6,6 +6,9 @@ import {TableSocket} from '../tables-socket.service'
 import { ChangeEventJSON } from '../change-event-json'
 import { EventsMock } from '../events-mock'
 import { Event } from '../event'
+import { Table } from '../table'
+import { ApiService } from '../services/api.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-side-navbar',
@@ -13,24 +16,28 @@ import { Event } from '../event'
   styleUrls: ['./side-navbar.component.css']
 })
 export class SideNavbarComponent implements OnInit {
-  constructor(private tablesLogic : TablesLogicService, private tableSockets : TableSocket ) { }
+  private eventsSub: Subscription;
+
+  eventSelected: Event
+  eventSelectedID: number
+  events: Event[] = [];
+  name: string = ""
+  eventTime: number = Date.now()
+  attendies: number
+ 
+  constructor(private tablesLogic: TablesLogicService, private tableSockets: TableSocket, private api: ApiService) { }
 
   ngOnInit() {
-   this.events = EventsMock
-   this.eventTime = this.events[0].eventTime
-   this.eventSelectedID = this.events[0].id
-   this.eventSelected = this.events[0]
-   
-   
+
+    this.api.getNextEvents();
+    this.eventsSub = this.api
+      .getEventTimeUpdateListener()
+      .subscribe((eventData) => {
+        this.events = eventData; //this.events = EventsMock
+      });
+ 
   }
-  
-  eventSelected : Event
-  eventSelectedID : number
-  events : Event[] 
-  name : string = ""
-  eventTime : number  = Date.now()
-  attendies : number
-  
+
 
   onReservation(){
    
@@ -52,7 +59,8 @@ export class SideNavbarComponent implements OnInit {
     
     //create json to deliver to socket
     let onChangeEvent : ChangeEventJSON = { eventID: this.eventSelected.id , selectedTable: this.tablesLogic.selectedTable};
-  
+
+
     //emit socket with json
     this.tableSockets.changeEventTime(onChangeEvent)
     

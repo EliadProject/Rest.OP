@@ -5,7 +5,7 @@ var menusShema = new mongoose.Schema({
     description: String
 });
   
-var Menu = mongoose.model('menus', menusShema);
+var Menu = mongoose.model('Menus', menusShema);
 
 module.exports = Menu;
 

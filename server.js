@@ -13,6 +13,7 @@ const createCountMinSketch = require('count-min-sketch')
 const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
 
 
+
 //const socket_tables = require('./backend/tables-socket');
 
 var event = require('./backend/routes/event');
@@ -60,12 +61,11 @@ io.set('origins', '*:*');
 
 
 //get functions
-var functions = require('./backend/functions/event');
+var event_Functions = require('./backend/DB/Functions/Events_Functions');
 var tablesJSON = [];
 
 
 var eventsTempStatus = {}
-var nextEventID = 1
 //Create data structure
 var sketch = createCountMinSketch()
 
@@ -79,8 +79,9 @@ db.once('open', function(callback) {
 	io.on('connection', function(socket) {
 	
 	//get the closest event to the current date 
-  functions.getNextEventID(function (response) {
-    nextEventID = response;
+  event_Functions.getNextEventID(function (response) {
+		let nextEventID = response;
+		console.log("Got next event "+nextEventID)
 
 	  //if room is state list is not exist, create one
 	  if(!eventsTempStatus[nextEventID])
@@ -88,27 +89,33 @@ db.once('open', function(callback) {
 		
 
 	  //join user to room by next event
-	  console.log("Hello new user, you are at room: " + nextEventID)
+		console.log("Hello new user, you are at room: " + nextEventID)
+		
+		//leaving default room
+
+
     socket.join(nextEventID)
 
 
-    functions.getTables(nextEventID, function (response) {
+    event_Functions.getTables(nextEventID, function (response) {
       //user joined, send all tables status by event id
       socket.emit("all-tables", { description: response })
     })
 
+	
     //send all temporary data of next event
     socket.emit("all-temp-status", { description: eventsTempStatus[nextEventID] })
-
-  });
+	});
+  
 
 
 
 	//on select, update hash table of 
 	socket.on('table-select', function(tableChange) {
-		//extract room ID
-		let roomID=  Object.keys(socket.rooms)[0]
-		roomID = parseInt(roomID)
+		
+		//extract room ID  
+		let roomID=  Object.keys(socket.rooms)[1]
+		console.log("room id is " + roomID)
 		
 		//update CMS counter of the event of the selection 
 		sketch.update(roomID, 1)
@@ -135,8 +142,8 @@ db.once('open', function(callback) {
 	socket.on('change-event-time',function(data){
 		 //extract current room id from user
 		 console.log("socket: " + socket.id + " entered change-event-time function, hello there!")
-		 let roomID=  Object.keys(socket.rooms)[0]
-		 roomID =parseInt(roomID)
+		 let roomID=  Object.keys(socket.rooms)[1]
+		 
 		 //exit the room
 		 socket.leave(roomID);
 		 
@@ -173,7 +180,7 @@ db.once('open', function(callback) {
 
 		 //retrieve the new event ID from data
 		 let eventID = data.eventID	
-		 eventID = parseInt(eventID)
+		 
 		 //update CMS counter
 		 sketch.update(eventID, 1)
 		 //join the user to the room
@@ -201,10 +208,10 @@ db.once('open', function(callback) {
 			};
 		
 		  //clean users selectedByOther 
-		  socket.emit("clean-selected-by-other",true)
+		  socket.emit("clean-selected-by- other",true)
 
 		  //send the user tables from DB
-      functions.getTables(eventID, function (response) {
+      event_Functions.getTables(eventID, function (response) {
         socket.emit("all-tables", { description: response })
       });
 
@@ -221,7 +228,7 @@ db.once('open', function(callback) {
 	})
 	socket.on('table-approve', function(tableApprovedID){
 		//retrive roomID of user
-		let roomID=  Object.keys(socket.rooms)[0]
+		let roomID=  Object.keys(socket.rooms)[1]
 		roomID =parseInt(roomID)
 		 
 		//find the table that approved
