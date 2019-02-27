@@ -9,6 +9,8 @@ import { Event } from '../event'
 import { Table } from '../table'
 import { ApiService } from '../services/api.service';
 import { Subscription } from "rxjs";
+import { AuthenticationService} from 'src/app/services'
+
 
 @Component({
   selector: 'app-side-navbar',
@@ -24,8 +26,14 @@ export class SideNavbarComponent implements OnInit {
   name: string = ""
   eventTime: number = Date.now()
   attendies: number
- 
-  constructor(private tablesLogic: TablesLogicService, private tableSockets: TableSocket, private api: ApiService) { }
+  currentUser : string 
+  constructor(private tablesLogic: TablesLogicService,
+     private tableSockets: TableSocket,
+      private api: ApiService,
+      private authenticationService : AuthenticationService) {
+        this.authenticationService.currentUser.subscribe(x=> {this.currentUser = x["_doc"]["_id"]
+      console.log(this.currentUser)})
+       }
 
   ngOnInit() {
 
