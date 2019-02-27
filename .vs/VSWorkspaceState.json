@@ -2,10 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\backend",
-    "\\backend\\models",
-    "\\backend\\routes",
-    "\\src\\app\\models"
+    "\\backend\\functions",
+    "\\e2e",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\helpers",
+    "\\src\\app\\main-tables",
+    "\\src\\app\\services",
+    "\\src\\app\\side-navbar",
+    "\\src\\app\\users"
   ],
-  "SelectedNode": "\\backend\\event.js",
+  "SelectedNode": "\\src\\app\\event.ts",
   "PreviewInSolutionExplorer": false
 }

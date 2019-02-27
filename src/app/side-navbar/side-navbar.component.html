@@ -1,49 +1,50 @@
 <h2> Reservation</h2>
 <hr class="style-seven">
-     
-         
-          
-              <div class="form-group">
-                  <label>What's your name?</label>
-                  <input id="name" type="text" class="form-control"  [value]="name" (input)="name = $event.target.value" />
-                 
-              </div>
-              <div class="form-group">
-                  <label>How many are you?</label>
-                  
-                  <input id="attendies" class="form-control" list="attendies-list"   />
-                  <datalist id="attendies-list">
-                    <option> 1 </option>
-                    <option> 2 </option>
-                    <option> 3 </option>
-                    <option> 4 </option>
-                    <option> 5 </option>
-                    <option> 6 </option>
-                    <option> 7 </option>
-                    <option> 8 </option>
-                  </datalist>
-              </div>
-             
-              <div class="form-group">
-                  <label>Which event would you like to join ?</label>
-                  <div class="form-group">
-                 
-                  <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.eventTime}} </select> -->
-                  <select  [(ngModel)]="eventSelected" (ngModelChange)="onChangeEventTime()" >
-                        <option [ngValue]="evt" *ngFor="let evt of events"> {{evt.eventTime}} </option>
-                  </select> 
-                      
-                   
-                  </div>
-              </div>
-              
-              <div id="buttons">
-                  <div id="add-btn" class="btn yellow" (click)="onReservation()">Approve Reservation</div>
-                  <span class="shadow"></span>           
-              </div>
 
-              <div>
-                  <label> Current room is {{eventSelected | json}} </label>
-              </div>
 
-            
+
+<div class="form-group">
+  <label>What's your name?</label>
+  <input id="name" type="text" class="form-control" [value]="name" (input)="name = $event.target.value" />
+
+</div>
+<div class="form-group">
+  <label>How many are you?</label>
+
+  <input id="attendies" class="form-control" list="attendies-list" />
+  <datalist id="attendies-list">
+    <option> 1 </option>
+    <option> 2 </option>
+    <option> 3 </option>
+    <option> 4 </option>
+    <option> 5 </option>
+    <option> 6 </option>
+    <option> 7 </option>
+    <option> 8 </option>
+  </datalist>
+</div>
+
+<div class="form-group">
+  <label>Which event would you like to join ?</label>
+  <div class="form-group">
+
+    <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.startTime}} </select> -->
+    <select [(ngModel)]="eventSelected" (ngModelChange)="onChangeEventTime()">
+      <option [ngValue]="evt" *ngFor="let evt of events"> {{evt.startTime}} </option>
+    </select>
+
+
+  </div>
+</div>
+
+<div id="buttons">
+  <div id="add-btn" class="btn yellow" (click)="onReservation()">Approve Reservation</div>
+  <span class="shadow"></span>
+</div>
+
+<div>
+  <label> Current room is {{eventSelected | json}} </label>
+</div>
+<div>
+  <label>bla is {{bla | json }} </label>
+</div>

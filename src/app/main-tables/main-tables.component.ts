@@ -7,6 +7,7 @@ import { takeLast } from 'rxjs/operators';
 import { TableChangeOperation } from '../tableChangeOperation';
 
 
+
 @Component({
   selector: 'app-main-tables',
   templateUrl: './main-tables.component.html',
