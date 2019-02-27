@@ -4,8 +4,12 @@ import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Array from 'd3-array';
 import * as d3Axis from 'd3-axis';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 import { STATISTICS } from '../shared/statistics';
+
+import { Frequency} from '../shared/statistics'
 
 @Component({
     selector: 'app-bar-chart',
@@ -25,14 +29,29 @@ export class BarChartComponent implements OnInit {
     private y: any;
     private svg: any;
     private g: any;
+    private statistics: Frequency[] = [];
 
-    constructor() {}
+    constructor(private http: HttpClient) {
+        this.loadStatsFromDB();
+    }
 
     ngOnInit() {
-        this.initSvg();
-        this.initAxis();
-        this.drawAxis();
-        this.drawBars();
+        
+    }
+
+    private loadStatsFromDB()
+    {
+        const req = this.http.post('http://localhost:3000/stats', {}).subscribe(
+        (res : Frequency[]) => {this.statistics = res
+         this.initSvg();
+         this.initAxis();
+         this.drawAxis();
+         this.drawBars();
+        },
+        err => {
+          console.log("Error occured");
+        }
+        );
     }
 
     private initSvg() {
@@ -46,8 +65,11 @@ export class BarChartComponent implements OnInit {
     private initAxis() {
         this.x = d3Scale.scaleBand().rangeRound([0, this.width]).padding(0.1);
         this.y = d3Scale.scaleLinear().rangeRound([this.height, 0]);
-        this.x.domain(STATISTICS.map((d) => d.letter));
-        this.y.domain([0, d3Array.max(STATISTICS, (d) => d.frequency)]);
+        console.log(this.statistics.forEach(element => {
+            console.log(element)
+        }))
+        this.x.domain(this.statistics.map((d) => d._id));
+        this.y.domain([0, d3Array.max(this.statistics, (d) => d.count)]);
     }
 
     private drawAxis() {
@@ -69,13 +91,13 @@ export class BarChartComponent implements OnInit {
 
     private drawBars() {
         this.g.selectAll('.bar')
-            .data(STATISTICS)
+            .data(this.statistics)
             .enter().append('rect')
             .attr('class', 'bar')
-            .attr('x', (d) => this.x(d.letter) )
-            .attr('y', (d) => this.y(d.frequency) )
+            .attr('x', (d) => this.x(d._id) )
+            .attr('y', (d) => this.y(d.count) )
             .attr('width', this.x.bandwidth())
-            .attr('height', (d) => this.height - this.y(d.frequency) );
+            .attr('height', (d) => this.height - this.y(d.count) );
     }
 
 }
