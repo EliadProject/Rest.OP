@@ -6,6 +6,9 @@ import {TableSocket} from '../tables-socket.service'
 import { ChangeEventJSON } from '../change-event-json'
 import { EventsMock } from '../events-mock'
 import { Event } from '../event'
+import { Table } from '../table'
+import { ApiService } from '../services/api.service';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-side-navbar',
@@ -13,24 +16,43 @@ import { Event } from '../event'
   styleUrls: ['./side-navbar.component.css']
 })
 export class SideNavbarComponent implements OnInit {
-  constructor(private tablesLogic : TablesLogicService, private tableSockets : TableSocket ) { }
+  private eventsSub: Subscription;
+
+  eventSelected: Event
+  eventSelectedID: number
+  events: Event[] = [];
+  tbls: Table[] = [];
+  tblsid: number
+  name: string = ""
+  eventTime: number = Date.now()
+  attendies: number
+  bla: any;
+
+  constructor(private tablesLogic: TablesLogicService, private tableSockets: TableSocket, private api: ApiService) { }
 
   ngOnInit() {
    this.events = EventsMock
    this.eventTime = this.events[0].eventTime
    this.eventSelectedID = this.events[0].id
    this.eventSelected = this.events[0]
-   
+    
+    this.api.getNextEvents()
+    
+
+    this.api.getNextEvents();
+    this.eventsSub = this.api
+      .getEventUpdateListener()
+      .subscribe((eventData: { id: number, tables: Table[] }) => {
+        //this.totalNotes = noteData.noteCount;
+        //this.notes = noteData.notes;
+        this.tbls = eventData.tables;
+        this.tblsid = eventData.id;
+        this.bla = eventData;
+      });
+
    
   }
-  
-  eventSelected : Event
-  eventSelectedID : number
-  events : Event[] 
-  name : string = ""
-  eventTime : number  = Date.now()
-  attendies : number
-  
+
 
   onReservation(){
    
