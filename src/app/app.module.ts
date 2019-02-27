@@ -21,6 +21,8 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/helpers';
 import { Role } from 'src/app/models';
 import {ProgressBarModule} from "angular-progress-bar"
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { BingMaps } from './bing-maps/bing-maps.component';
+import { AgmCoreModule } from '@agm/core';
 
 // used to create fake backend
 import { fakeBackendProvider } from 'src/app/helpers';
@@ -41,6 +43,11 @@ const appRoutes: Routes = [
     component: BarChartComponent,
     canActivate: [AuthGuard]
   },
+  { 
+    path: "bingMaps",
+    component: BingMaps,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'admin',
     component: AdminComponent,
@@ -57,6 +64,7 @@ const appRoutes: Routes = [
     NavbarComponent,
     LoginComponent,
     BarChartComponent,
+    BingMaps,
     MainTablesComponent,
     FooterComponent,
     LoginComponent,
@@ -78,7 +86,10 @@ const appRoutes: Routes = [
     MatListModule,
     FormsModule,
     SocketIoModule.forRoot(config),
-    ProgressBarModule 
+    ProgressBarModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDKySFqU4vetducd1PsW77L9cAlElWly-8'
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
