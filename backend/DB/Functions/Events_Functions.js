@@ -53,8 +53,6 @@ module.exports = {
 
   },
   approveTable : function(eventID,tableID,userID){
-    
-
       Event.update({_id: eventID,
   'tables._id' : tableID},  
     {$set: {'tables.$.userId' : userID} }, function (err, res){

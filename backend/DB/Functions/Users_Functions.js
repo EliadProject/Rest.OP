@@ -6,7 +6,7 @@ module.exports = {
         user.save()
     },
     getUserByID: function(id,callback){
-         User.findOne({id:id},function(err,res){
+         User.findOne({_id:id},function(err,res){
             if (err) return console.error(err)
             else {    
                 return callback(res)
