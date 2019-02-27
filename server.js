@@ -11,6 +11,7 @@ const cors = require('cors');
 const errorHandler = require('src/app/helpers/error-handler');
 const createCountMinSketch = require('count-min-sketch') 
 const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
+const Stats = require('./backend/DB/Functions/Stats_Functions')
 
 
 
@@ -25,6 +26,14 @@ app.use(cors());
 
 // api routes
 app.use('/users', require('src/app/users/users.controller'));
+
+// Load Statistics from DB
+app.post('/stats', function(req, res) {
+	Stats.getStats(function(statsData){
+		console.log(statsData)
+		res.send(statsData)
+	});
+});
 
 // global error handler
 app.use(errorHandler);
