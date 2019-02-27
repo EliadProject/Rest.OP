@@ -28,9 +28,9 @@
   <label>Which event would you like to join ?</label>
   <div class="form-group">
 
-    <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.startTime}} </select> -->
+    <!-- <select *ngFor="let event of events" (click)="onChangeEventTime(event)"> {{event.eventTime}} </select> -->
     <select [(ngModel)]="eventSelected" (ngModelChange)="onChangeEventTime()">
-      <option [ngValue]="evt" *ngFor="let evt of events"> {{evt.startTime}} </option>
+      <option [ngValue]="evt" *ngFor="let evt of events"> {{evt.eventTime}} </option>
     </select>
 
 
@@ -44,7 +44,4 @@
 
 <div>
   <label> Current room is {{eventSelected | json}} </label>
-</div>
-<div>
-  <label>bla is {{bla | json }} </label>
 </div>

@@ -15,34 +15,24 @@ declare var require: any
 })
 export class ApiService {
   private events: Event[] = [];
-  private ttables: Table[] = [];
-  private eventsUpdated = new Subject < { id: number; tables: Table[], startTime: any }>();
   private eventsTimeUpdated = new Subject<Event[]>();
-
-
 
   constructor(private http: HttpClient) { }
 
   getNextEvents() {
-    return this.http.get<[{ _id: any, tables: any, startTime:any }]>("http://localhost:3000/event").pipe(
+    return this.http.get<[{ _id: any, tables: any, startTime: any, endTime: any}]>("http://localhost:3000/event").pipe(
       map(eventData => {
         let eventsData = []
         eventData.forEach(x => {
-
           let moment = require('moment'); //momentjs
-          // moment.utc(x.startTime).format("HH:mm")
-          let event = { id: x._id, startTime: moment.utc(x.startTime).format("HH:mm") }
+          let eventTime = moment.utc(x.startTime).format("DD-MM-YYYY HH:mm") + '-' + moment.utc(x.endTime).format("HH:mm");
+          let event = { id: x._id, eventTime: eventTime }
           eventsData.push(event);
         })
 
         return eventsData;
 
         /*
-         *
-        return {
-          id: eventData[0].id,
-          tables: []
-        }
         return {
           id: eventData[0].id,
           tables: eventData[0].tables.map(table => {
@@ -65,10 +55,6 @@ export class ApiService {
       this.eventsTimeUpdated.next(transformedEventData);
       });
 
-  }
-
-  getEventUpdateListener() {
-    return this.eventsUpdated.asObservable();
   }
 
   getEventTimeUpdateListener() {
