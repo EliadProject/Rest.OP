@@ -2,7 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\backend",
-    "\\src\\app\\services"
+    "\\backend\\DB\\Functions",
+    "\\backend\\DB\\Schemas",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\admin",
+    "\\src\\app\\services",
+    "\\src\\app\\side-navbar"
   ],
   "PreviewInSolutionExplorer": false
 }
