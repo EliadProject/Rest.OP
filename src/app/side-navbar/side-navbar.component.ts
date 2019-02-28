@@ -31,7 +31,7 @@ export class SideNavbarComponent implements OnInit {
      private tableSockets: TableSocket,
       private api: ApiService,
       private authenticationService : AuthenticationService) {
-        //this.authenticationService.currentUser.subscribe(x=> this.currentUser = x["_doc"]["_id"])
+        this.authenticationService.currentUser.subscribe(x=> this.currentUser = x["_doc"]["_id"])
        }
 
   ngOnInit() {
@@ -51,7 +51,7 @@ export class SideNavbarComponent implements OnInit {
   onReservation(){
    
     //Packaging the data to Reservation Object
-    const reservation = new Reservation()
+    
    
     
     let reservationJSON = {eventID: this.eventSelected.id, tableID: this.tablesLogic.selectedTable, userID: this.currentUser}

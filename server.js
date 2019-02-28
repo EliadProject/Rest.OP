@@ -254,11 +254,11 @@ db.once('open', function(callback) {
 		
 		//retrieve parameters from reservation data
 		let eventID = reservationData.eventID
-
+		console.log("event id is: " + eventID)
 		let tableID = reservationData.tableID
-
+		console.log("table id is " + tableID)
 		let userID = reservationData.userID
-		
+		console.log("user id is: " + userID)
 		//query the db for approve
 		event_Functions.approveTable(eventID,tableID,userID,function(res){
 			event_Functions.getTables(eventID,function(tables){
