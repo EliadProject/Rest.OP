@@ -13,7 +13,7 @@ const createCountMinSketch = require('count-min-sketch')
 const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
 const Stats = require('./backend/DB/Functions/Stats_Functions')
 const BingMap = require('./backend/DB/Functions/BingMaps_Functions')
-
+const EventSchema =require('./backend/DB/Schemas/Events_Schema')
 
 //const socket_tables = require('./backend/tables-socket');
 
@@ -224,7 +224,7 @@ db.once('open', function(callback) {
 
 		 //retrieve the new event ID from data
 		 let eventID = data.eventID	
-		 
+		 console.log(eventID)
 		 //update CMS counter
 		 sketch.update(eventID, 1)
 		 //join the user to the room
@@ -306,13 +306,24 @@ function getCMSvalue(key) {
 	return sketch.query(key)
 }
 
-var mockEvents = [1,2,3,4,5,6,7]
+
 function getCMSpopularity(key){
-	let popularity 
+	 
+	EventSchema.find({
+    }, function (err, events) {
+	if (err) return next(err);
+	console.log(events)
+	var mockEvents=[]
+	var len = events.length
+	for (var i = 0; i < len; i++) {
+		mockEvents.push(events[i]._id);
+	  }
+	console.log(mockEvents)
+     let popularity 
 	//get all events
 	
 	//map eventID to frequency
-	const frequencyValues =  mockEvents.map(x=>  getCMSvalue(x))
+	const frequencyValues =  mockEvents.map(x=> getCMSvalue(x))
    
 	//filtering - retrive all events that has values
 	const filterdEvents =  frequencyValues.filter(x=> x !=0 )
@@ -336,7 +347,8 @@ function getCMSpopularity(key){
 	else
 		popularity = 1
 	return popularity;
-	
+})
 
 }
+
 
