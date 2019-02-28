@@ -15,7 +15,7 @@ module.exports = {
         })
     },
     getAllUsers: function(callback){
-        User.find({},function(err,res){
+        User.find({}, {_id:0, draggable:0},function(err,res){
             if (err) return console.error(err)
             else {    
                 return callback(res)

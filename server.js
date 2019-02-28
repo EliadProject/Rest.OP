@@ -41,6 +41,13 @@ app.post('/locations', function(req, res) {
 	});
 });
 
+// Load Users List from DB
+app.get('/users', function(req, res) {
+	UsersFunctions.getAllUsers(function(statsData){
+		res.send(statsData)
+	});
+});
+
 // global error handler
 app.use(errorHandler);
 

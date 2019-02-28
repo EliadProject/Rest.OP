@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
   }
 
   get isAdmin() {
-    return this.currentUser && this.currentUser.role === Role.Admin;
+    return this.currentUser && this.authenticationService.roleType === Role.Admin;
   }
 
   logout() {
