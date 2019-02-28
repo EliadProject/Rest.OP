@@ -33,19 +33,3 @@ module.exports = {
     })
   }
 };
-
-
-/*
- *
-       if (err) return console.error(err)
-      else if (res) {
-        var len = res.menu.length
-        for (var i = 0; i < len; i++) {
-          keywords.push(res.menu[i].food);
-        }
-        keywords.forEach(k => builder.add(k));
-        const text = 'meal'; ///from the user
-        const hits = ac.match(text);
-        return callback(hits)
-      }
-*/
