@@ -31,7 +31,7 @@ export class SideNavbarComponent implements OnInit {
      private tableSockets: TableSocket,
       private api: ApiService,
       private authenticationService : AuthenticationService) {
-        this.authenticationService.currentUser.subscribe(x=> this.currentUser = x["_doc"]["_id"])
+        //this.authenticationService.currentUser.subscribe(x=> this.currentUser = x["_doc"]["_id"])
        }
 
   ngOnInit() {

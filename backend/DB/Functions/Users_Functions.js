@@ -15,7 +15,7 @@ module.exports = {
         })
     },
     getAllUsers: function(callback){
-        User.find({},function(err,res){
+        User.find({}, {_id:0, password:0, draggable:0},function(err,res){
             if (err) return console.error(err)
             else {    
                 return callback(res)
@@ -32,6 +32,14 @@ module.exports = {
     },
     groupByRole: function(callback){
         User.aggregate([{$group : { _id:'$role', count : {$sum : 1 } }}],function(err,res){
+            if (err) return console.error(err)
+            else {    
+                return callback(res)
+            }
+        })
+    },
+    getUserLocationMap: function(callback){
+        User.find({},{lat:1, lng:1, label:1, draggable:1, _id:0},function(err,res){
             if (err) return console.error(err)
             else {    
                 return callback(res)

@@ -7,8 +7,6 @@ import * as d3Axis from 'd3-axis';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
-import { STATISTICS } from '../shared/statistics';
-
 import { Frequency} from '../shared/statistics'
 
 @Component({
@@ -42,15 +40,15 @@ export class BarChartComponent implements OnInit {
     private loadStatsFromDB()
     {
         const req = this.http.post('http://localhost:3000/stats', {}).subscribe(
-        (res : Frequency[]) => {this.statistics = res
-         this.initSvg();
-         this.initAxis();
-         this.drawAxis();
-         this.drawBars();
-        },
-        err => {
-          console.log("Error occured");
-        }
+            (res : Frequency[]) => {this.statistics = res
+            this.initSvg();
+            this.initAxis();
+            this.drawAxis();
+            this.drawBars();
+            },
+            err => {
+            console.log("Error occured");
+            }
         );
     }
 

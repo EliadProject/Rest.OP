@@ -12,7 +12,7 @@ const errorHandler = require('src/app/helpers/error-handler');
 const createCountMinSketch = require('count-min-sketch') 
 const UsersFunctions =require('./backend/DB/Functions/Users_Functions')
 const Stats = require('./backend/DB/Functions/Stats_Functions')
-
+const BingMap = require('./backend/DB/Functions/BingMaps_Functions')
 
 
 //const socket_tables = require('./backend/tables-socket');
@@ -30,7 +30,20 @@ app.use('/users', require('src/app/users/users.controller'));
 // Load Statistics from DB
 app.post('/stats', function(req, res) {
 	Stats.getStats(function(statsData){
-		console.log(statsData)
+		res.send(statsData)
+	});
+});
+
+// Load Bing Map locations from DB
+app.post('/locations', function(req, res) {
+	BingMap.getStats(function(statsData){
+		res.send(statsData)
+	});
+});
+
+// Load Users List from DB
+app.post('/users', function(req, res) {
+	UsersFunctions.getAllUsers(function(statsData){
 		res.send(statsData)
 	});
 });

@@ -9,10 +9,19 @@ import { User } from 'src/app/models';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
+    public roleType: string ;
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
+        if(this.currentUserSubject.asObservable()["source"]["value"] != null)
+        {
+            this.roleType = this.currentUser["source"]["_value"]["_doc"]["role"]
+        }
+        //this.roleType = this.currentUserSubject.asObservable()["_doc"]["role"]
+        //console.log(this.currentUser["source"]["_value"]["_doc"]["role"])
+        //this.roleType = JSON.parse(localStorage.getItem('currentUser'))["_doc"]["role"];
+        // console.log("Car: " + JSON.parse(localStorage.getItem('currentUser'))["_doc"]["role"])
     }
 
     public get currentUserValue(): User {
