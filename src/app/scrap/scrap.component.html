@@ -1,0 +1,24 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div id="buttons">
+    <input id="name" name="filter" type="text" style="width:250px;" class="form-control" [value]="" (input)="name = $event.target.value" />
+    <div id="add-btn" class="btn yellow" (click)="onScrap()">Filter</div>
+    <span class="shadow"></span>
+  </div>
+<div class="">
+    <div class="row col-md-6">
+    <table class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>Matches</th>
+        </tr>
+    </thead>
+            <tr *ngFor="let scrap of scrapList">
+                <td>{{scrap}}</td>
+            </tr>
+    </table>
+    </div>
+</div>

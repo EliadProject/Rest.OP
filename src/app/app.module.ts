@@ -21,6 +21,7 @@ import { Role } from 'src/app/models';
 import {ProgressBarModule} from "angular-progress-bar"
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { BingMaps } from './bing-maps/bing-maps.component';
+import { Scraping } from './scrap/scrap.component';
 import { AgmCoreModule } from '@agm/core';
 
 // used to create fake backend
@@ -47,6 +48,11 @@ const appRoutes: Routes = [
     component: BingMaps,
     canActivate: [AuthGuard]
   },
+  { 
+    path: "scrap",
+    component: Scraping,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'admin',
     component: AdminComponent,
@@ -64,6 +70,7 @@ const appRoutes: Routes = [
     LoginComponent,
     BarChartComponent,
     BingMaps,
+    Scraping,
     MainTablesComponent,
     LoginComponent,
     AdminComponent

@@ -48,6 +48,28 @@ app.post('/users', function(req, res) {
 	});
 });
 
+
+mongoose.connect('mongodb+srv://restio:Aa123456@webapp-cpe2k.azure.mongodb.net/test?retryWrites=true');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+  console.log('Successfully connected - MongoDB');
+
+
+
+
+});
+
+var scrape_Functions = require('./backend/DB/Functions/Scrape_Functions');
+app.post('/getscrap', function(req, res) {
+	var name = req.body.name;
+	console.log("Param: " + name)
+	var keywords = name.split(" ");
+	var x;
+	scrape_Functions.searchScrape(keywords,x => res.send(x));
+
+});
+
 // global error handler
 app.use(errorHandler);
 
