@@ -38,6 +38,14 @@ module.exports = {
             }
         })
     },
+    getUserLocationMap: function(callback){
+        User.find({},{lat:1, lng:1, label:1, draggable:1, _id:0},function(err,res){
+            if (err) return console.error(err)
+            else {    
+                return callback(res)
+            }
+        })
+    },
     deleteUser: function(id,callback){
         User.deleteOne({_id: id },function(err,res){
             if (err) return console.error(err)

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MouseEvent } from '@agm/core';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+
+import { marker } from '../shared/statistics'
 
 @Component({
   selector: 'app-maps',
@@ -15,6 +19,23 @@ export class BingMaps  {
     // initial center position for the map
     lat: number = 32.065085;
     lng: number = 34.771324;
+    private markers: marker[] = [];
+
+    constructor(private http: HttpClient) {
+      this.loadLocationFromDB();
+    }
+
+    private loadLocationFromDB()
+    {
+      const req = this.http.post('http://localhost:3000/locations', {}).subscribe(
+            (res : marker[]) => {
+              this.markers = res
+            },
+            err => {
+            console.log("Error occured");
+            }
+        );
+    }
   
     clickedMarker(label: string, index: number) {
       console.log(`clicked the marker: ${label || index}`)
@@ -31,34 +52,4 @@ export class BingMaps  {
     markerDragEnd(m: marker, $event: MouseEvent) {
       console.log('dragEnd', m, $event);
     }
-    
-    markers: marker[] = [
-        {
-            lat: 31.995767,
-            lng: 34.740038,
-            label: 'Hay Mizrachi',
-            draggable: true
-        },
-        {
-            lat: 32.003165,
-            lng: 34.769160,
-            label: 'Eliad Vertman',
-            draggable: false
-        },
-        {
-            lat: 32.073224,
-            lng: 34.789529,
-            label: 'Amir Sasson',
-            draggable: true
-        }
-    ]
   }
-  
-  // just an interface for type safety.
-  interface marker {
-      lat: number;
-      lng: number;
-      label?: string;
-      draggable: boolean;
-  }
-  
