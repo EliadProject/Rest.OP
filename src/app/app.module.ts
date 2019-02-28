@@ -10,7 +10,6 @@ import { SideNavbarComponent } from './side-navbar/side-navbar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MainTablesComponent } from './main-tables/main-tables.component';
 import { LoginComponent } from './login/login.component';
-import { FooterComponent } from './footer/footer.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin';
@@ -66,7 +65,6 @@ const appRoutes: Routes = [
     BarChartComponent,
     BingMaps,
     MainTablesComponent,
-    FooterComponent,
     LoginComponent,
     AdminComponent
   ],
